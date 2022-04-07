@@ -65,8 +65,8 @@ void scene_initial_setup(Scene* self){
     game_server->actor_list[0] = &actor_player;
     game_server->player = &actor_player;
     // move player to spawn point
-    actor_player.base.block_x = 2;
-    actor_player.base.block_y = 2;
+    actor_player.base.block_x = 6;
+    actor_player.base.block_y = 11;
     // add test npc
     game_server->interact_points[0] = &point_test;
 }
