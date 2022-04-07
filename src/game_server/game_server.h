@@ -153,6 +153,7 @@ void GameServer_render(GameServer *self, ScreenServer *server)
             actor->custom_draw(actor);
 
         // draw text buttons
+        Rect2D text_rect;
         for (i = 0; i < MAX_INTERACT_NUM; i++)
         {
             InteractPoint *interact_point = self->interact_points[i];
@@ -168,10 +169,16 @@ void GameServer_render(GameServer *self, ScreenServer *server)
 
                 int screen_y = player_y + 16; // below player
                 int screen_x = player_x + 16/2 - txt_w / 2; // center
-                 // clip to screen boundary
+                // clip to screen boundary
                 screen_x = max(0, min(screen_x, RESOLUTION_X - txt_w));
                 screen_y = max(0, min(screen_y, RESOLUTION_Y - txt_h));
                 draw_textbox(server, text, screen_x, screen_y, WHITE, true, 0, false, 0);
+                // mark dirty
+                text_rect.x = screen_x;
+                text_rect.y = screen_y;
+                text_rect.w = txt_w;
+                text_rect.h = txt_h;
+                ScreenServer_dirty_region(server, text_rect);
             }
         }
     }
