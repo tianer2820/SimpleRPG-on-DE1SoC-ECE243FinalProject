@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "../const.h"
+#include "../utils.h"
 #include "screen_server.h"
 #include "screen_server_vga.h"
 
