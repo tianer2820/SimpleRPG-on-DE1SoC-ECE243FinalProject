@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 
 project(rpg_test)
 
+add_compile_definitions(FAKE_SERVER)
 
 if(WIN32) # manual paths for windows
     set(SDL2_INCLUDE_DIRS ${SDL2_INCLUDE_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/SDL2/include")

@@ -2,15 +2,18 @@
 #include <stdlib.h>
 #include <math.h>
 
-
 #include "const.h"
 #include "globals.h"
 
 #include "screen_server/screen_server.h"
-#include "screen_server/screen_server_sdl.h"
-
 #include "input_server/input_server.h"
-#include "input_server/input_server_sdl.h"
+#ifndef FAKE_SERVER
+    #include "screen_server/screen_server_vga.h"
+    #include "input_server/input_server_ps2.h"
+#else
+    #include "screen_server/screen_server_sdl.h"
+    #include "input_server/input_server_sdl.h"
+#endif
 
 #include "paint_functions.h"
 #include "text/textbox.h"
@@ -19,17 +22,21 @@
 #include "game_server/game_server.h"
 #include "game_contents/game_contents.h"
 
-
-
-int main(int argc, char ** argv)
+int main(int argc, char **argv)
 {
     // init screen server
-    screen_server = (ScreenServer*)ScreenServerSDL_new(NULL);
+    #ifndef FAKE_SERVER
+    screen_server = (ScreenServer*)ScreenServerVGA_new(NULL);
+    input_server = (InputServer*)InputServerPS2_new(NULL);
+    #else
+    screen_server = (ScreenServer *)ScreenServerSDL_new(NULL);
+    input_server = (InputServer *)InputServerSDL_new(NULL);
+    #endif
+
     screen_server->init(screen_server);
+    input_server->init(input_server);
 
     // init input server
-    input_server = (InputServer*)InputServerSDL_new(NULL);
-    input_server->init(input_server);
 
     // init game
     game_server = GameServer_new(NULL);
@@ -43,16 +50,19 @@ int main(int argc, char ** argv)
     bool quit = false;
     while (!quit)
     {
-        // event poll
+        // event poll if SDL
+        #ifdef FAKE_SERVER
         SDL_Event event;
-        while(SDL_PollEvent(&event)) {
-            if(event.type == SDL_QUIT){
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 quit = true;
                 break;
             }
             // process other events
         }
-
+        #endif
 
         // game server update
         GameServer_process(game_server);
@@ -61,7 +71,7 @@ int main(int argc, char ** argv)
         // screen server update
         screen_server->flip(screen_server);
     }
-    
+
     // clean up
     input_server->stop(input_server);
     free(input_server);
