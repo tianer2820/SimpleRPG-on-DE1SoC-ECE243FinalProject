@@ -2,9 +2,7 @@
 #define INPUT_SERVER_SDL_H
 
 #include <stdlib.h>
-
 #include <SDL.h>
-
 #include "input_server.h"
 
 typedef struct
@@ -35,7 +33,7 @@ InputServerSDL *InputServerSDL_new(InputServerSDL *self)
     {
         server = (InputServerSDL *)calloc(1, sizeof(InputServerSDL));
     }
-    InputServer_new(server);
+    InputServer_new((InputServer*)server);
     server->base.init = InputServerSDL_init;
     server->base.update = InputServerSDL_update;
     server->base.stop = InputServerSDL_stop;
