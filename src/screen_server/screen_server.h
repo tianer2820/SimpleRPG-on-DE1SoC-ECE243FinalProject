@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include "../const.h"
+#include "../utils.h"
 
 
 typedef struct ScreenServerStruct
@@ -24,12 +25,17 @@ typedef struct ScreenServerStruct
     // flip
     void (*flip)(struct ScreenServerStruct* self);
 
+    // speed optimization, used by game map rendering
+    Rect2D dirty_region;  // unit in pixels
+
 } ScreenServer;
 
 
 ScreenServer* ScreenServer_new(ScreenServer* self);
 void ScreenServer_delete(ScreenServer* self);
-
+void ScreenServer_dirty_region(ScreenServer* self, Rect2D region);
+void ScreenServer_dirty_clear(ScreenServer *self);
+void ScreenServer_dirty_all(ScreenServer* self);
 
 #endif // SCREEN_SERVER_H
 

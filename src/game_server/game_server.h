@@ -16,6 +16,7 @@
 
 // define input server
 extern InputServer* input_server;
+extern ScreenServer* screen_server;
 
 #define MAX_ACTOR_NUM 32
 #define MAX_LABEL_NUM 32
@@ -53,7 +54,8 @@ void GameServer_init(GameServer *self)
     {
         self->dialog_queue[i] = NULL;
     }
-    
+    // invalidate all screen
+    ScreenServer_dirty_all(screen_server);
 }
 
 void GameServer_load_scene(GameServer *self, Scene *scene)
@@ -123,9 +125,12 @@ void GameServer_process(GameServer *self)
 void GameServer_render(GameServer *self, ScreenServer *server)
 {
     Scene_draw_map(self->scene, server, 0, 0);
+    // clear invalid region
+    ScreenServer_dirty_clear(server);
 
     // render actor
     int i;
+    Rect2D actor_rect;
     for (i = 0; i < MAX_ACTOR_NUM; i++)
     {
         // draw npc
@@ -136,6 +141,12 @@ void GameServer_render(GameServer *self, ScreenServer *server)
         int x = actor->display_x * 16;
         int y = actor->display_y * 16;
         draw_img_slice_color(server, x, y, actor->image, actor->color);
+        // mark screen dirty
+        actor_rect.x = x - actor->image.origin_x;
+        actor_rect.y = y - actor->image.origin_y;
+        actor_rect.w = actor->image.w;
+        actor_rect.h = actor->image.h;
+        ScreenServer_dirty_region(server, actor_rect);
 
         // custom draw function if provided
         if (actor->custom_draw != NULL)

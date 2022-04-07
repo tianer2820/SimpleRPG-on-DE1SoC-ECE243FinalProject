@@ -3,6 +3,7 @@
 #include "../screen_server/screen_server.h"
 #include "../paint_functions.h"
 #include "../const.h"
+#include "../utils.h"
 #include "tilemap.h"
 #include "tileset.h"
 
@@ -12,12 +13,23 @@ void Tilemap_draw_map(Tilemap* map, ScreenServer* server, int x, int y){
     int tile_data_offset;
     ImageSlice slice;
 
+    Rect2D tile_rect; // rect for invalid detection
+    tile_rect.w = 16;
+    tile_rect.h = 16;
+
     for ( tile_x = 0; tile_x < map->w; tile_x++)
     {
         for (tile_y = 0; tile_y < map->h; tile_y++)
         {
             tile_offset_x = tile_x * map->tileset->tile_size + x;
             tile_offset_y = tile_y * map->tileset->tile_size + y;
+
+            tile_rect.x = tile_offset_x;
+            tile_rect.y = tile_offset_y;
+            if(!rect_overlaps(server->dirty_region, tile_rect)){
+                continue;  // skip clean tiles
+            }
+            
             tile_data_offset = tile_y * map->w + tile_x;
 
             int id = map->map_data[tile_data_offset];
@@ -36,12 +48,23 @@ void Tilemap_draw_map_color(Tilemap* map, ScreenServer* server, int x, int y, sh
     int tile_data_offset;
     ImageSlice slice;
 
+    Rect2D tile_rect; // rect for invalid detection
+    tile_rect.w = 16;
+    tile_rect.h = 16;
+
     for ( tile_x = 0; tile_x < map->w; tile_x++)
     {
         for (tile_y = 0; tile_y < map->h; tile_y++)
         {
             tile_offset_x = tile_x * map->tileset->tile_size + x;
             tile_offset_y = tile_y * map->tileset->tile_size + y;
+
+            tile_rect.x = tile_offset_x;
+            tile_rect.y = tile_offset_y;
+            if(!rect_overlaps(server->dirty_region, tile_rect)){
+                continue;  // skip clean tiles
+            }
+
             tile_data_offset = tile_y * map->w + tile_x;
 
             int id = map->map_data[tile_data_offset];
