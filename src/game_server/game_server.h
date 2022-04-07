@@ -9,6 +9,7 @@
 #include "../screen_server/screen_server.h"
 #include "../input_server/input_server.h"
 #include "../text/textbox.h"
+#include "dialog.h"
 #include "scene.h"
 #include "actor.h"
 #include "interact_point.h"
@@ -19,14 +20,18 @@ extern InputServer* input_server;
 #define MAX_ACTOR_NUM 32
 #define MAX_LABEL_NUM 32
 #define MAX_INTERACT_NUM 32
+#define MAX_DIALOG_QUEUE_NUM 32
 
 typedef struct
 {
     Scene *scene;
     Actor *actor_list[MAX_ACTOR_NUM]; // player & npcs, only for display
     Actor *player;
+
     InteractPoint *interact_points[MAX_INTERACT_NUM]; // for conversations or machines
     bool interact_point_show[MAX_INTERACT_NUM];
+
+    Dialog* dialog_queue[MAX_DIALOG_QUEUE_NUM];
 } GameServer;
 
 void GameServer_init(GameServer *self)
@@ -38,12 +43,17 @@ void GameServer_init(GameServer *self)
         self->actor_list[i] = NULL;
     }
     self->player = NULL;
-    // clear array
+    // clear arrays
     for (i = 0; i < MAX_INTERACT_NUM; i++)
     {
         self->interact_points[i] = NULL;
         self->interact_point_show[i] = false;
     }
+    for (i = 0; i < MAX_DIALOG_QUEUE_NUM; i++)
+    {
+        self->dialog_queue[i] = NULL;
+    }
+    
 }
 
 void GameServer_load_scene(GameServer *self, Scene *scene)
