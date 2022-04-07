@@ -29,5 +29,10 @@ bool rect_overlaps(Rect2D rect1, Rect2D rect2){
     return pos_in_rect(rect1.x, rect1.y, rect2) ||
            pos_in_rect(rect1.x + rect1.w, rect1.y, rect2) ||
            pos_in_rect(rect1.x + rect1.w, rect1.y + rect1.h, rect2) ||
-           pos_in_rect(rect1.x, rect1.y + rect1.h, rect2);
+           pos_in_rect(rect1.x, rect1.y + rect1.h, rect2) ||
+
+           pos_in_rect(rect2.x, rect2.y, rect1) ||
+           pos_in_rect(rect2.x + rect2.w, rect2.y, rect1) ||
+           pos_in_rect(rect2.x + rect2.w, rect2.y + rect2.h, rect1) ||
+           pos_in_rect(rect2.x, rect2.y + rect2.h, rect1);
 }
