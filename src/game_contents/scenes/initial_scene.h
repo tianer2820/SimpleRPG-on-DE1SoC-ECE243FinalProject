@@ -53,8 +53,8 @@ Tilemap tilemap_initial_layer1;
 Tilemap tilemap_initial_layer2;
 
 // test interact point
-InteractPoint point_test;
-const char* point_test_label = "Test Point";
+InteractPoint point_front_door;
+const char* point_front_door_label = "Into hallway";
 
 void point_test_interact(InteractPoint* self){
     GameServer_load_scene(game_server, &scene_hallway);
@@ -67,8 +67,8 @@ void scene_initial_setup(Scene* self){
     // move player to spawn point
     actor_player.base.block_x = 6;
     actor_player.base.block_y = 11;
-    // add test npc
-    game_server->interact_points[0] = &point_test;
+    // add hallway point
+    game_server->interact_points[0] = &point_front_door;
 }
 
 
@@ -93,10 +93,10 @@ void init_scene_initial(){
     scene_initial.setup = scene_initial_setup;
 
     // interact points
-    point_test.x = 2;
-    point_test.y = 2;
-    point_test.action_name_str = point_test_label;
-    point_test.interact = point_test_interact;
+    point_front_door.x = 2;
+    point_front_door.y = 2;
+    point_front_door.action_name_str = point_front_door_label;
+    point_front_door.interact = point_test_interact;
 }
 
 
