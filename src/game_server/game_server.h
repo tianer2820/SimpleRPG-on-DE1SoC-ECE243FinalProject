@@ -5,7 +5,7 @@
 
 // #include "../globals.h"
 
-
+#include "../const.h"
 #include "../screen_server/screen_server.h"
 #include "../input_server/input_server.h"
 #include "../text/textbox.h"
@@ -147,6 +147,9 @@ void GameServer_render(GameServer *self, ScreenServer *server)
 
                 int screen_y = player_y + 16; // below player
                 int screen_x = player_x + 16/2 - txt_w / 2; // center
+                 // clip to screen boundary
+                screen_x = max(0, min(screen_x, RESOLUTION_X - txt_w));
+                screen_y = max(0, min(screen_y, RESOLUTION_Y - txt_h));
                 draw_textbox(server, text, screen_x, screen_y, WHITE, true, 0, false, 0);
             }
         }
