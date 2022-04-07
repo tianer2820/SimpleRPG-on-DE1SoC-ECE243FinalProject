@@ -42,7 +42,6 @@ Actor* Actor_new(Actor* self){
     actor->display_x = 0;
     actor->display_y = 0;
     ImageSlice_new(&(actor->image));
-    actor->image;
     actor->color = 0xFFFF;
     actor->start = NULL;
     actor->process = NULL;

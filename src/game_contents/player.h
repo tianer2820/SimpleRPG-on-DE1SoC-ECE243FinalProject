@@ -99,9 +99,9 @@ void player_process(ActorPlayer *self)
 
 void init_player()
 {
-    Actor_new(&actor_player);
+    Actor_new((Actor*)&actor_player);
     // actor properties
-    Actor *actor = &actor_player;
+    Actor *actor = (Actor*)&actor_player;
     actor->id = PLAYER;
     actor->name = NULL;
     actor->block_x = 0;

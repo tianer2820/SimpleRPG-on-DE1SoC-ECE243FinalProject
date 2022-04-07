@@ -32,7 +32,7 @@ void ScreenServerVGA_init(ScreenServerVGA *self)
 
     /* set pixel buffer memory */
     *(self->_pixel_ctrl_ptr + 1) = 0xC8000000;
-    b_self->flip(self);
+    b_self->flip((ScreenServer*)self);
 
     self->_pixel_buffer_start = *(self->_pixel_ctrl_ptr);
     // b_self->fill(self, 0); // clear screen
@@ -66,4 +66,5 @@ void ScreenServerVGA_flip(ScreenServerVGA *self)
         s = *status_addr;
         s = s & 1;
     }
+    self->_pixel_buffer_start = *(self->_pixel_ctrl_ptr + 1); // new back buffer
 }

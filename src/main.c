@@ -64,6 +64,9 @@ int main(int argc, char **argv)
         }
         #endif
 
+        // input server update
+        input_server->update(input_server);
+
         // game server update
         GameServer_process(game_server);
         GameServer_render(game_server, screen_server);

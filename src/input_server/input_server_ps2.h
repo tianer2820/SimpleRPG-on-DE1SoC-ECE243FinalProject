@@ -15,6 +15,29 @@ typedef struct
     bool extend_code;
 } InputServerPS2;
 
+
+
+void InputServerPS2_set_key_state(InputServerPS2 *self, KeyScancode k_code, bool state)
+{
+    if (k_code >= SCAN_CODE_MAX)
+        return;
+    int byte_offset = k_code / 8;
+    int bit_offset = 7 - k_code % 8;
+
+    unsigned char mask = 1 << bit_offset;
+    if (state)
+    {
+        self->key_status[byte_offset] |= mask;
+    }
+    else
+    {
+        mask = ~mask;
+        self->key_status[byte_offset] &= mask;
+    }
+}
+
+
+
 void InputServerPS2_init(InputServerPS2 *self)
 {
     int i;
@@ -35,6 +58,8 @@ void InputServerPS2_update(InputServerPS2 *self)
         if (RVALID != 0)
         {
             byte = PS2_data & 0xFF;
+        } else{
+            break;  // no more byte to read
         }
 
         // state machine
@@ -145,25 +170,6 @@ InputServerPS2 *InputServerPS2_new(InputServerPS2 *self)
     server->base.stop = InputServerPS2_stop;
     server->base.key_is_pressed = InputServerPS2_key_is_pressed;
     return server;
-}
-
-void InputServerPS2_set_key_state(InputServerPS2 *self, KeyScancode k_code, bool state)
-{
-    if (k_code >= SCAN_CODE_MAX)
-        return;
-    int byte_offset = k_code / 8;
-    int bit_offset = 7 - k_code % 8;
-
-    unsigned char mask = 1 << bit_offset;
-    if (state)
-    {
-        self->key_status[byte_offset] |= mask;
-    }
-    else
-    {
-        mask = ~mask;
-        self->key_status[byte_offset] &= mask;
-    }
 }
 
 #endif // INPUT_SERVER_PS2_H

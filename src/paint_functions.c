@@ -67,7 +67,8 @@ void draw_line(ScreenServer *server, int x1, int y1, int x2, int y2, short color
     int error_y = unit_lenth / 2;
     int y = y1;
 
-    for (int i = 0; i < dx; i += 1)
+    int i;
+    for (i = 0; i < dx; i += 1)
     {
         int x = x1 + i;
 
