@@ -97,6 +97,15 @@ void player_process(ActorPlayer *self)
     self->base.image.flip_x = self->flip_x;
 }
 
+void player_set_position(ActorPlayer* self, int x, int y){
+    self->base.block_x = x;
+    self->base.block_y = y;
+    self->base.display_x = x;
+    self->base.display_y = y;
+    AnimePlayer_start(&(self->anime_x), x, x, 0);
+    AnimePlayer_start(&(self->anime_y), y, y, 0);
+}
+
 void init_player()
 {
     Actor_new((Actor*)&actor_player);
@@ -127,6 +136,7 @@ void init_player()
     actor->start = player_start;
     actor->process = player_process;
     actor->custom_draw = NULL;
+    actor->set_position = player_set_position;
 }
 
 #endif // PLAYER_H

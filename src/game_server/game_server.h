@@ -77,6 +77,14 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
     }
 }
 
+void GameServer_move_player(GameServer* self, int x, int y){
+    if (self->player == NULL)
+    {
+        return;
+    }
+    self->player->set_position(self->player, x, y);
+}
+
 void GameServer_process(GameServer *self)
 {
     int i;

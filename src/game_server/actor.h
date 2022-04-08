@@ -25,8 +25,16 @@ typedef struct ActorStruct
     void (*start)(struct ActorStruct* self);
     void (*process)(struct ActorStruct* self);
     void (*custom_draw)(struct ActorStruct* self);
+    void (*set_position)(struct ActorStruct* self, int x, int y);
 } Actor;
 
+
+void Actor_set_position(struct ActorStruct* self, int x, int y){
+    self->block_x = x;
+    self->block_y = y;
+    self->display_x = x;
+    self->display_y = y;
+}
 
 /* allocate memory (if needed) and clear all fields of the actor object */
 Actor* Actor_new(Actor* self){
