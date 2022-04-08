@@ -12,12 +12,16 @@ short rgb2short(unsigned char r, unsigned char g, unsigned char b){
 }
 
 void short2rgb(short color, unsigned char* r, unsigned char* g, unsigned char* b){
-    (*r) = (color & (0b11111 << 11)) >> 11;
-    (*r) = (*r) * 255 / 0b11111;
-    (*g) = (color & (0b111111 << 5)) >> 5;
-    (*g) = (*g) * 255 / 0b111111;
-    (*b) = (color & (0b11111));
-    (*b) = (*b) * 255 / 0b11111;
+    int rp, gp, bp;
+    rp = (color & (0b11111 << 11)) >> 11;
+    rp = rp * 255 / 0b11111;
+    gp = (color & (0b111111 << 5)) >> 5;
+    gp = gp * 255 / 0b111111;
+    bp = (color & (0b11111));
+    bp = bp * 255 / 0b11111;
+    *r = rp;
+    *g = gp;
+    *b = bp;
 }
 
 bool pos_in_rect(int x, int y, Rect2D rect){
