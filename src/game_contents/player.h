@@ -28,6 +28,7 @@ void player_start(ActorPlayer *self)
     // setup animation
     AnimePlayer_start(&self->anime_x, self->base.block_x, self->base.block_x, 0);
     AnimePlayer_start(&self->anime_y, self->base.block_y, self->base.block_y, 0);
+    self->base.image = self->anime_slices[0]; // default idle image
 }
 
 void player_process(ActorPlayer *self)

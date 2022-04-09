@@ -64,36 +64,35 @@ void GameServer_render(GameServer *self, ScreenServer *server)
         // custom draw function if provided
         if (actor->custom_draw != NULL)
             actor->custom_draw(actor);
-
-        // draw text buttons
-        Rect2D text_rect;
-        for (i = 0; i < MAX_INTERACT_NUM; i++)
+    }
+    // draw text buttons
+    Rect2D text_rect;
+    for (i = 0; i < MAX_INTERACT_NUM; i++)
+    {
+        InteractPoint *interact_point = self->interact_points[i];
+        if (interact_point == NULL)
+            break;
+        if (self->interact_point_show[i])
         {
-            InteractPoint *interact_point = self->interact_points[i];
-            if (interact_point == NULL)
-                break;
-            if (self->interact_point_show[i])
-            {
-                char *text = self->interact_points[i]->action_name_str;
-                int player_x = self->player->display_x * 16;
-                int player_y = self->player->display_y * 16;
+            char *text = self->interact_points[i]->action_name_str;
+            int player_x = self->player->display_x * 16;
+            int player_y = self->player->display_y * 16;
 
-                int txt_w, txt_h;
-                estimate_textbox_size(text, &txt_w, &txt_h);
+            int txt_w, txt_h;
+            estimate_textbox_size(text, &txt_w, &txt_h);
 
-                int screen_y = player_y + 16;                 // below player
-                int screen_x = player_x + 16 / 2 - txt_w / 2; // center
-                // clip to screen boundary
-                screen_x = max(0, min(screen_x, RESOLUTION_X - txt_w));
-                screen_y = max(0, min(screen_y, RESOLUTION_Y - txt_h));
-                draw_textbox(server, text, screen_x, screen_y, WHITE, true, 0, false, 0);
-                // mark dirty
-                text_rect.x = screen_x;
-                text_rect.y = screen_y;
-                text_rect.w = txt_w;
-                text_rect.h = txt_h;
-                ScreenServer_dirty_region(server, text_rect);
-            }
+            int screen_y = player_y + 16;                 // below player
+            int screen_x = player_x + 16 / 2 - txt_w / 2; // center
+            // clip to screen boundary
+            screen_x = max(0, min(screen_x, RESOLUTION_X - txt_w));
+            screen_y = max(0, min(screen_y, RESOLUTION_Y - txt_h));
+            draw_textbox(server, text, screen_x, screen_y, WHITE, true, 0, false, 0);
+            // mark dirty
+            text_rect.x = screen_x;
+            text_rect.y = screen_y;
+            text_rect.w = txt_w;
+            text_rect.h = txt_h;
+            ScreenServer_dirty_region(server, text_rect);
         }
     }
 }
@@ -191,7 +190,8 @@ void GameServer_process(GameServer *self)
         if (self->dialog_animation_done)
         {
             // check key press and update
-            while(true){
+            while (true)
+            {
                 input_server->update(input_server);
                 if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
                 {
@@ -199,7 +199,6 @@ void GameServer_process(GameServer *self)
                     self->dialog = NULL;
                     break;
                 }
-                
             }
         }
         else
@@ -208,7 +207,7 @@ void GameServer_process(GameServer *self)
             ScreenServer_dirty_all(screen_server);
             GameServer_render(self, screen_server);
             // render the animation
-            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H+1)*4, 0); // draw black box first
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * 4, 0); // draw black box first
             int i = 0;
             int cursor_x = 5; // start with some padding
             int cursor_y = 5;
@@ -233,7 +232,6 @@ void GameServer_process(GameServer *self)
                         cursor_x = 5;
                         cursor_y += FONT_H + 1;
                     }
-                    
                 }
                 i += 1;
                 screen_server->flip(screen_server);
@@ -290,12 +288,15 @@ void GameServer_process(GameServer *self)
     }
 }
 
-void GameServer_set_dialog(GameServer* self, Dialog* dialog){
+void GameServer_set_dialog(GameServer *self, Dialog *dialog)
+{
     self->dialog = dialog;
     if (dialog == NULL)
     {
         self->dialog_animation_done = true;
-    }else{
+    }
+    else
+    {
         self->dialog_animation_done = false;
     }
 }
@@ -310,7 +311,5 @@ GameServer *GameServer_new(GameServer *self)
     GameServer_init(server);
     return server;
 }
-
-
 
 #endif // GAME_SERVER_H

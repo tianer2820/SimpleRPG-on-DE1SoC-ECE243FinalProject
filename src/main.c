@@ -47,14 +47,6 @@ int main(int argc, char **argv)
     // GameServer_load_scene(game_server, &scene_hallway);
     GameServer_load_scene(game_server, &scene_initial);
 
-    Dialog initial_dialog;
-    Dialog_new(&initial_dialog);
-    initial_dialog.text = "\
-You fall asleep in an ECE243 lecture... When you\n\
-wake up, everyone has gone and you are in the room\n\
-alone.";
-    GameServer_set_dialog(game_server, &initial_dialog);
-
 
     bool quit = false;
     while (!quit)
