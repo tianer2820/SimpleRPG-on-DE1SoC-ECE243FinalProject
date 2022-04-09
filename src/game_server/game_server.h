@@ -35,100 +35,6 @@ typedef struct
     Dialog* dialog_queue[MAX_DIALOG_QUEUE_NUM];
 } GameServer;
 
-void GameServer_init(GameServer *self)
-{
-    // remove all actors
-    int i;
-    for (i = 0; i < MAX_ACTOR_NUM; i++)
-    {
-        self->actor_list[i] = NULL;
-    }
-    self->player = NULL;
-    // clear arrays
-    for (i = 0; i < MAX_INTERACT_NUM; i++)
-    {
-        self->interact_points[i] = NULL;
-        self->interact_point_show[i] = false;
-    }
-    for (i = 0; i < MAX_DIALOG_QUEUE_NUM; i++)
-    {
-        self->dialog_queue[i] = NULL;
-    }
-    // invalidate all screen
-    ScreenServer_dirty_all(screen_server);
-}
-
-void GameServer_load_scene(GameServer *self, Scene *scene)
-{
-    // clear current scene
-    GameServer_init(self);
-
-    self->scene = scene;
-    scene->setup(scene);
-
-    // process actor start functions
-    int i;
-    for (i = 0; i < MAX_ACTOR_NUM; i++)
-    {
-        if (self->actor_list[i] == NULL)
-            break;
-        if (self->actor_list[i]->start != NULL)
-            self->actor_list[i]->start(self->actor_list[i]);
-    }
-}
-
-void GameServer_move_player(GameServer* self, int x, int y){
-    if (self->player == NULL)
-    {
-        return;
-    }
-    self->player->set_position(self->player, x, y);
-}
-
-void GameServer_process(GameServer *self)
-{
-    int i;
-    for (i = 0; i < MAX_ACTOR_NUM; i++)
-    {
-        if (self->actor_list[i] == NULL)
-            break;
-        if (self->actor_list[i]->process != NULL)
-            self->actor_list[i]->process(self->actor_list[i]);
-    }
-
-    // update text button for interact points
-    for (i = 0; i < MAX_INTERACT_NUM; i++)
-    {
-        InteractPoint *interact_point = self->interact_points[i];
-        if (interact_point == NULL)
-            break;
-        // check player position
-        if (self->player->block_x == interact_point->x &&
-            self->player->block_y == interact_point->y)
-        {
-            self->interact_point_show[i] = true;
-        }
-        else
-        {
-            self->interact_point_show[i] = false;
-        }
-    }
-    // check text button press
-    int active_button_index = -1;
-    for (i = 0; i < MAX_INTERACT_NUM; i++)
-    {
-        InteractPoint *interact_point = self->interact_points[i];
-        if (interact_point == NULL)
-            break;
-        if (self->interact_point_show[i] == true){
-            active_button_index = i;
-            break;
-        }
-    }
-    if(active_button_index >= 0 && input_server->key_is_pressed(input_server, K_SCANCODE_F)){
-        self->interact_points[active_button_index]->interact(self->interact_points[active_button_index]);
-    }
-}
 
 void GameServer_render(GameServer *self, ScreenServer *server)
 {
@@ -189,6 +95,138 @@ void GameServer_render(GameServer *self, ScreenServer *server)
                 ScreenServer_dirty_region(server, text_rect);
             }
         }
+    }
+}
+
+void GameServer_init(GameServer *self)
+{
+    // remove all actors
+    int i;
+    for (i = 0; i < MAX_ACTOR_NUM; i++)
+    {
+        self->actor_list[i] = NULL;
+    }
+    self->player = NULL;
+    // clear arrays
+    for (i = 0; i < MAX_INTERACT_NUM; i++)
+    {
+        self->interact_points[i] = NULL;
+        self->interact_point_show[i] = false;
+    }
+    for (i = 0; i < MAX_DIALOG_QUEUE_NUM; i++)
+    {
+        self->dialog_queue[i] = NULL;
+    }
+    // invalidate all screen
+    ScreenServer_dirty_all(screen_server);
+}
+
+void GameServer_load_scene(GameServer *self, Scene *scene)
+{
+    // clear current scene
+    GameServer_init(self);
+
+    self->scene = scene;
+    scene->setup(scene);
+
+    // process actor start functions
+    int i;
+    for (i = 0; i < MAX_ACTOR_NUM; i++)
+    {
+        if (self->actor_list[i] == NULL)
+            break;
+        if (self->actor_list[i]->start != NULL)
+            self->actor_list[i]->start(self->actor_list[i]);
+    }
+
+    // screen switch effect
+    // This delay can prevent player from switching back to previous
+    // scene immediately, if spawned on an interact point
+    int w;
+    const int inc_per_frame = 2;
+    for (w = 0; w < RESOLUTION_X / 2; w += inc_per_frame)
+    {
+        draw_rect(screen_server, w, 0, inc_per_frame * 2, RESOLUTION_Y, 0); // left rect
+        draw_rect(screen_server, RESOLUTION_X - w, 0, inc_per_frame * 2, RESOLUTION_Y, 0); // right rect
+        screen_server->flip(screen_server);
+    }
+    Rect2D dirty_region;
+    for (w = 0; w < RESOLUTION_X / 2; w += inc_per_frame)
+    {
+        // left dirty
+        dirty_region.h = RESOLUTION_Y;
+        dirty_region.w = 16;
+        dirty_region.x = RESOLUTION_X/2 - w;
+        dirty_region.y = 0;
+        screen_server->dirty_region = dirty_region;
+        GameServer_render(self, screen_server);
+        // right dirty
+        dirty_region.h = RESOLUTION_Y;
+        dirty_region.w = 16;
+        dirty_region.x = RESOLUTION_X / 2 + w;
+        dirty_region.y = 0;
+        screen_server->dirty_region = dirty_region;
+        GameServer_render(self, screen_server);
+        // draw black box
+        draw_rect(screen_server, RESOLUTION_X/2 - w - 16, 0, 32, RESOLUTION_Y, 0); // left rect
+        draw_rect(screen_server, RESOLUTION_X / 2 + w, 0, 32, RESOLUTION_Y, 0); // right rect
+        screen_server->flip(screen_server);
+    }
+    ScreenServer_dirty_all(screen_server);
+    
+    
+}
+
+void GameServer_move_player(GameServer* self, int x, int y){
+    if (self->player == NULL)
+    {
+        return;
+    }
+    self->player->set_position(self->player, x, y);
+}
+
+void GameServer_process(GameServer *self)
+{
+    int i;
+    for (i = 0; i < MAX_ACTOR_NUM; i++)
+    {
+        if (self->actor_list[i] == NULL)
+            break;
+        if (self->actor_list[i]->process != NULL)
+            self->actor_list[i]->process(self->actor_list[i]);
+    }
+
+    // update text button for interact points
+    for (i = 0; i < MAX_INTERACT_NUM; i++)
+    {
+        InteractPoint *interact_point = self->interact_points[i];
+        if (interact_point == NULL)
+            break;
+        // check player position
+        if (self->player->block_x == interact_point->x &&
+            self->player->block_y == interact_point->y)
+        {
+            self->interact_point_show[i] = true;
+        }
+        else
+        {
+            self->interact_point_show[i] = false;
+        }
+    }
+    // check text button press
+    int active_button_index = -1;
+    for (i = 0; i < MAX_INTERACT_NUM; i++)
+    {
+        InteractPoint *interact_point = self->interact_points[i];
+        if (interact_point == NULL)
+            break;
+        if (self->interact_point_show[i] == true){
+            active_button_index = i;
+            break;
+        }
+    }
+    if(active_button_index >= 0 && input_server->key_is_pressed(input_server, K_SCANCODE_F)){
+        self->interact_points[active_button_index]->interact(self->interact_points[active_button_index]);
     }
 }
 
