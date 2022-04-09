@@ -159,14 +159,14 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
         dirty_region.x = RESOLUTION_X/2 - w;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
-        GameServer_render(self, screen_server);
+        Scene_draw_map(self->scene, screen_server, 0, 0);
         // right dirty
         dirty_region.h = RESOLUTION_Y;
         dirty_region.w = 16;
         dirty_region.x = RESOLUTION_X / 2 + w;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
-        GameServer_render(self, screen_server);
+        Scene_draw_map(self->scene, screen_server, 0, 0);
         // draw black box
         draw_rect(screen_server, RESOLUTION_X/2 - w - 16, 0, 32, RESOLUTION_Y, 0); // left rect
         draw_rect(screen_server, RESOLUTION_X / 2 + w, 0, 32, RESOLUTION_Y, 0); // right rect
