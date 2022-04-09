@@ -50,8 +50,8 @@ int main(int argc, char **argv)
     Dialog initial_dialog;
     Dialog_new(&initial_dialog);
     initial_dialog.text = "You fall asleep in an ECE243 lecture...";
-    game_server->dialog = &initial_dialog;
-    game_server->dialog_animation_done = false;
+    GameServer_set_dialog(game_server, &initial_dialog);
+
 
     bool quit = false;
     while (!quit)

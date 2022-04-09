@@ -282,6 +282,16 @@ void GameServer_process(GameServer *self)
     }
 }
 
+void GameServer_set_dialog(GameServer* self, Dialog* dialog){
+    self->dialog = dialog;
+    if (dialog == NULL)
+    {
+        self->dialog_animation_done = true;
+    }else{
+        self->dialog_animation_done = false;
+    }
+}
+
 GameServer *GameServer_new(GameServer *self)
 {
     GameServer *server = self;
@@ -292,5 +302,7 @@ GameServer *GameServer_new(GameServer *self)
     GameServer_init(server);
     return server;
 }
+
+
 
 #endif // GAME_SERVER_H
