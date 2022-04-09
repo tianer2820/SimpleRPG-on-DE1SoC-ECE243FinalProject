@@ -208,9 +208,10 @@ void GameServer_process(GameServer *self)
             ScreenServer_dirty_all(screen_server);
             GameServer_render(self, screen_server);
             // render the animation
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H+1)*4, 0); // draw black box first
             int i = 0;
-            int cursor_x = 0;
-            int cursor_y = 0;
+            int cursor_x = 5; // start with some padding
+            int cursor_y = 5;
             while (true)
             {
                 char c = self->dialog->text[i];
@@ -219,13 +220,20 @@ void GameServer_process(GameServer *self)
                 else if (c == '\n') // new line
                 {
                     cursor_y += FONT_H + 1;
-                    cursor_x = 0;
+                    cursor_x = 5;
                 }
                 else
                 {
                     // normal text
                     draw_char(screen_server, cursor_x, cursor_y, c, WHITE);
                     cursor_x += FONT_W + 1;
+                    // auto line warp
+                    if (cursor_x > RESOLUTION_X - 6)
+                    {
+                        cursor_x = 5;
+                        cursor_y += FONT_H + 1;
+                    }
+                    
                 }
                 i += 1;
                 screen_server->flip(screen_server);
