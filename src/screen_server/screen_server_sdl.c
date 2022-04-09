@@ -107,7 +107,6 @@ void ScreenServerSDL_flip(ScreenServerSDL* self){
         SDL_Delay(2);
         time = SDL_GetTicks();
     }
-    uint32_t delta = time - self->last_filp_time;
-    self->last_filp_time = time - (delta - 17);
+    self->last_filp_time = time;
 
 }
