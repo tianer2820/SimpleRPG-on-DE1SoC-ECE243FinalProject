@@ -12,7 +12,9 @@ typedef struct
 
 
 void InputServerSDL_init(InputServerSDL *self) {}
-void InputServerSDL_update(InputServerSDL *self) {}
+void InputServerSDL_update(InputServerSDL *self) {
+    SDL_PumpEvents();
+}
 void InputServerSDL_stop(InputServerSDL *self) {}
 bool InputServerSDL_key_is_pressed(InputServerSDL *self, KeyScancode key)
 {

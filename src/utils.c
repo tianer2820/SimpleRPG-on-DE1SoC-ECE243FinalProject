@@ -25,11 +25,14 @@ void short2rgb(short color, unsigned char* r, unsigned char* g, unsigned char* b
 }
 
 bool pos_in_rect(int x, int y, Rect2D rect){
-    return x >= rect.x && x <= rect.x + rect.w &&
+    return rect.w != 0 && rect.h != 0 &&
+           x >= rect.x && x <= rect.x + rect.w &&
            y >= rect.y && y <= rect.y + rect.h;
 }
 
 bool rect_overlaps(Rect2D rect1, Rect2D rect2){
+    if(rect1.w == 0 || rect1.h == 0 || rect2.w == 0 || rect2.h == 0)
+        return false;
     return pos_in_rect(rect1.x, rect1.y, rect2) ||
            pos_in_rect(rect1.x + rect1.w, rect1.y, rect2) ||
            pos_in_rect(rect1.x + rect1.w, rect1.y + rect1.h, rect2) ||
