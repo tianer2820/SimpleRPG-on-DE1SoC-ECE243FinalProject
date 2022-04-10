@@ -18,6 +18,7 @@ typedef struct
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Surface* surface;
+    SDL_Surface* surface_back;
     uint32_t last_filp_time;
 } ScreenServerSDL;
 

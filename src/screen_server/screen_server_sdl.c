@@ -36,6 +36,8 @@ void ScreenServerSDL_init(ScreenServerSDL* self){
     self->renderer = SDL_CreateRenderer(self->window, -1, 0);
     self->surface = SDL_CreateRGBSurface(0, RESOLUTION_X, RESOLUTION_Y, 32,
             0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+    self->surface_back = SDL_CreateRGBSurface(0, RESOLUTION_X, RESOLUTION_Y, 32,
+            0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
     if (self->surface == NULL)
     {
         printf("Error occured: ");
@@ -49,6 +51,7 @@ void ScreenServerSDL_init(ScreenServerSDL* self){
 void ScreenServerSDL_stop(ScreenServerSDL* self){
     // quit
     SDL_FreeSurface(self->surface);
+    SDL_FreeSurface(self->surface_back);
     SDL_DestroyRenderer(self->renderer);
     SDL_DestroyWindow(self->window);
     SDL_Quit();
@@ -100,6 +103,14 @@ void ScreenServerSDL_flip(ScreenServerSDL* self){
     SDL_RenderPresent(self->renderer);
 
     SDL_DestroyTexture(texture);
+
+    // swap surfaces
+    SDL_Surface* surface_temp = self->surface;
+    self->surface = self->surface_back;
+    self->surface_back = surface_temp;
+    Rect2D dirty_temp = self->base.dirty_region;
+    self->base.dirty_region = self->base.dirty_region_back;
+    self->base.dirty_region_back = dirty_temp;
 
     uint32_t time = SDL_GetTicks();
     while (time - self->last_filp_time < 17) // lock to 60fps

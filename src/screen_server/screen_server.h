@@ -27,6 +27,7 @@ typedef struct ScreenServerStruct
 
     // speed optimization, used by game map rendering
     Rect2D dirty_region;  // unit in pixels
+    Rect2D dirty_region_back;
 
 } ScreenServer;
 

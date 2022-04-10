@@ -67,4 +67,9 @@ void ScreenServerVGA_flip(ScreenServerVGA *self)
         s = s & 1;
     }
     self->_pixel_buffer_start = *(self->_pixel_ctrl_ptr + 1); // new back buffer
+
+    // flip dirty mask
+    Rect2D dirty_temp = self->base.dirty_region;
+    self->base.dirty_region = self->base.dirty_region_back;
+    self->base.dirty_region_back = dirty_temp;
 }
