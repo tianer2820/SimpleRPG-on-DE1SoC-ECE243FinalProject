@@ -62,13 +62,6 @@ void point_test_interact(InteractPoint* self){
 }
 
 
-// dialog
-Dialog initial_dialog;
-char* initial_dialog_text = "\
-You fall asleep in an ECE243 lecture... When you\n\
-wake up, everyone has gone and you are in the room\n\
-alone.";
-
 
 void scene_initial_setup(Scene* self){
     game_server->actor_list[0] = &actor_player;
@@ -78,9 +71,7 @@ void scene_initial_setup(Scene* self){
     // add hallway point
     game_server->interact_points[0] = &point_front_door;
 
-    Dialog_new(&initial_dialog);
-    initial_dialog.text = initial_dialog_text;
-    GameServer_set_dialog(game_server, &initial_dialog);
+    
 
 }
 

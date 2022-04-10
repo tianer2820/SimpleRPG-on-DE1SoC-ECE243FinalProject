@@ -24,7 +24,7 @@
 
 int main(int argc, char **argv)
 {
-    // init screen server
+    // init screen server & input server
     #ifndef FAKE_SERVER
     screen_server = (ScreenServer*)ScreenServerVGA_new(NULL);
     input_server = (InputServer*)InputServerPS2_new(NULL);
@@ -32,11 +32,8 @@ int main(int argc, char **argv)
     screen_server = (ScreenServer *)ScreenServerSDL_new(NULL);
     input_server = (InputServer *)InputServerSDL_new(NULL);
     #endif
-
     screen_server->init(screen_server);
     input_server->init(input_server);
-
-    // init input server
 
     // init game
     game_server = GameServer_new(NULL);
@@ -46,6 +43,16 @@ int main(int argc, char **argv)
     init_scene_initial();
     // GameServer_load_scene(game_server, &scene_hallway);
     GameServer_load_scene(game_server, &scene_initial);
+
+    // initial dialog
+    Dialog initial_dialog;
+    char* initial_dialog_text = "\
+You fall asleep in an ECE243 lecture... When you\n\
+wake up, everyone has gone and you are in the room\n\
+alone.";
+    Dialog_new(&initial_dialog);
+    initial_dialog.text = initial_dialog_text;
+    GameServer_set_dialog(game_server, &initial_dialog);
 
 
     bool quit = false;
