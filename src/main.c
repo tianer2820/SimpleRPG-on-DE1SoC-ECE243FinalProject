@@ -22,6 +22,10 @@
 #include "game_server/game_server.h"
 #include "game_contents/game_contents.h"
 
+void initial_dialog_effect(Dialog* self){
+    printf("game started.");
+}
+
 int main(int argc, char **argv)
 {
     // init screen server & input server
@@ -56,6 +60,7 @@ alone.";
     initial_dialog.choice1 = initial_dialog_text_choice1;
     initial_dialog.next1 = NULL;
     initial_dialog.next2 = &initial_dialog;
+    initial_dialog.effect = initial_dialog_effect;
     GameServer_set_dialog(game_server, &initial_dialog);
 
 

@@ -257,6 +257,10 @@ void GameServer_process(GameServer *self)
 
             ScreenServer_dirty_clear(screen_server);
         }
+        // do dialog action/effect (after render, before dialog switch)
+        if(self->dialog->effect != NULL){
+            self->dialog->effect(self->dialog);
+        }
         // do input check loop
         {
             // check key press and update
@@ -275,6 +279,7 @@ void GameServer_process(GameServer *self)
                 }
             }
         }
+        
     }
 
     // do actor process
