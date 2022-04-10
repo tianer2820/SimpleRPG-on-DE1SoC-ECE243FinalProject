@@ -32,7 +32,6 @@ typedef struct
     bool interact_point_show[MAX_INTERACT_NUM];
 
     Dialog *dialog;
-    bool dialog_animation_done;
 } GameServer;
 
 void GameServer_render(GameServer *self, ScreenServer *server)
@@ -113,7 +112,6 @@ void GameServer_init(GameServer *self)
         self->interact_point_show[i] = false;
     }
     self->dialog = NULL;
-    self->dialog_animation_done = false;
 
     // invalidate all screen
     ScreenServer_dirty_all(screen_server);
@@ -187,21 +185,7 @@ void GameServer_process(GameServer *self)
     // check dialog ui first, skip everything else if ui is on
     if (self->dialog != NULL)
     {
-        if (self->dialog_animation_done)
-        {
-            // check key press and update
-            while (true)
-            {
-                input_server->update(input_server);
-                if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
-                {
-                    ScreenServer_dirty_all(screen_server);
-                    self->dialog = NULL;
-                    break;
-                }
-            }
-        }
-        else
+        // do dialog animation
         {
             const int bg_lines = 5;
             // refresh the screen first
@@ -251,9 +235,24 @@ void GameServer_process(GameServer *self)
                     draw_char(screen_server, 5, 5, self->dialog->text[0], WHITE);
                 }
             }
-            self->dialog_animation_done = true;
+
+            // show text options
             ScreenServer_dirty_clear(screen_server);
-            return;
+            
+        }
+        // do input check loop
+        {
+            // check key press and update
+            while (true)
+            {
+                input_server->update(input_server);
+                if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
+                {
+                    ScreenServer_dirty_all(screen_server);
+                    self->dialog = NULL;
+                    break;
+                }
+            }
         }
     }
 
@@ -306,14 +305,6 @@ void GameServer_process(GameServer *self)
 void GameServer_set_dialog(GameServer *self, Dialog *dialog)
 {
     self->dialog = dialog;
-    if (dialog == NULL)
-    {
-        self->dialog_animation_done = true;
-    }
-    else
-    {
-        self->dialog_animation_done = false;
-    }
 }
 
 GameServer *GameServer_new(GameServer *self)
