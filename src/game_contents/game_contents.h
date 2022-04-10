@@ -2,7 +2,9 @@
 #define GAME_CONTENTS_H
 
 #include "resources.h"
+#include "tilesets.h"
 #include "player.h"
+
 #include "scenes/scenes_globals.h"
 #include "scenes/initial_scene.h"
 #include "scenes/hallway_scene.h"

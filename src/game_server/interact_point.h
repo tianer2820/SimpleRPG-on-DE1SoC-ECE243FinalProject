@@ -5,7 +5,7 @@
 
 typedef struct InteractPointStruct
 {
-    char* action_name_str;
+    const char* action_name_str;
     void (*interact)(struct InteractPointStruct* self);
     int x;
     int y;
