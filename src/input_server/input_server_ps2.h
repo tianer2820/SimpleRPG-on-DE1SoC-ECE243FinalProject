@@ -72,7 +72,7 @@ void InputServerPS2_update(InputServerPS2 *self)
             self->extend_code = true;
             break;
 
-        // only WASD, F, Space and Esc are implemented currently
+        // only WASD, FG, Space and Esc are implemented currently
         case 0x1D: // W
             if (self->break_code)
                 InputServerPS2_set_key_state(self, K_SCANCODE_W, false);
@@ -110,6 +110,15 @@ void InputServerPS2_update(InputServerPS2 *self)
             break;
 
         case 0x2B: // F
+            if (self->break_code)
+                InputServerPS2_set_key_state(self, K_SCANCODE_F, false);
+            else
+                InputServerPS2_set_key_state(self, K_SCANCODE_F, true);
+            self->extend_code = false;
+            self->break_code = false;
+            break;
+
+        case 0x34: // G
             if (self->break_code)
                 InputServerPS2_set_key_state(self, K_SCANCODE_F, false);
             else

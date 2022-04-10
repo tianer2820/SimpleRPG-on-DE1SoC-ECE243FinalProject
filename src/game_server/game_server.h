@@ -266,7 +266,11 @@ void GameServer_process(GameServer *self)
                 if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
                 {
                     ScreenServer_dirty_all(screen_server);
-                    self->dialog = NULL;
+                    self->dialog = self->dialog->next1;
+                    break;
+                } else if(input_server->key_is_pressed(input_server, K_SCANCODE_G)){
+                    ScreenServer_dirty_all(screen_server);
+                    self->dialog = self->dialog->next2;
                     break;
                 }
             }

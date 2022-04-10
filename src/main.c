@@ -54,6 +54,8 @@ alone.";
     Dialog_new(&initial_dialog);
     initial_dialog.text = initial_dialog_text;
     initial_dialog.choice1 = initial_dialog_text_choice1;
+    initial_dialog.next1 = NULL;
+    initial_dialog.next2 = &initial_dialog;
     GameServer_set_dialog(game_server, &initial_dialog);
 
 
