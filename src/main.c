@@ -50,8 +50,10 @@ int main(int argc, char **argv)
 You fall asleep in an ECE243 lecture... When you\n\
 wake up, everyone has gone and you are in the room\n\
 alone.";
+    char* initial_dialog_text_choice1 = "F: continue...";
     Dialog_new(&initial_dialog);
     initial_dialog.text = initial_dialog_text;
+    initial_dialog.choice1 = initial_dialog_text_choice1;
     GameServer_set_dialog(game_server, &initial_dialog);
 
 

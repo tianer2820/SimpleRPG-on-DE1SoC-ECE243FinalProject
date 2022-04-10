@@ -45,7 +45,7 @@ void draw_textbox(ScreenServer *server, char *text, int x, int y, short color,
 
     // draw background if needed
     if (use_bg)
-        draw_rect(server, x, y, size_w, size_h, bg_color);
+        draw_rect(server, x-1, y-1, size_w+1, size_h+1, bg_color);
     // draw border if needed
     // TODO
 

@@ -151,14 +151,14 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
     {
         // left dirty
         dirty_region.h = RESOLUTION_Y;
-        dirty_region.w = 16-1;
+        dirty_region.w = 16 - 1;
         dirty_region.x = RESOLUTION_X / 2 - w;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
         Scene_draw_map(self->scene, screen_server, 0, 0);
         // right dirty
         dirty_region.h = RESOLUTION_Y;
-        dirty_region.w = 16-1;
+        dirty_region.w = 16 - 1;
         dirty_region.x = RESOLUTION_X / 2 + w - 16;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
@@ -188,18 +188,19 @@ void GameServer_process(GameServer *self)
         // do dialog animation
         {
             const int bg_lines = 5;
+            const int text_padding = 5;
             // refresh the screen first
             ScreenServer_dirty_all(screen_server);
             GameServer_render(self, screen_server);
-            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines, 0); // draw black box in front buffer
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines + 4, 0); // draw black box in front buffer
             screen_server->flip(screen_server);
             GameServer_render(self, screen_server);
-            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines, 0); // draw black box in back buffer
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines + 4, 0); // draw black box in back buffer
 
             // render the animation
             int i = 0;
-            int cursor_x = 5; // start with some padding
-            int cursor_y = 5;
+            int cursor_x = text_padding; // start with some padding
+            int cursor_y = text_padding;
             while (true)
             {
                 char c = self->dialog->text[i];
@@ -225,20 +226,36 @@ void GameServer_process(GameServer *self)
                 i += 1;
                 // draw one more char
                 char next = self->dialog->text[i];
-                if(next != '\0' && next != '\n')
+                if (next != '\0' && next != '\n')
                     draw_char(screen_server, cursor_x, cursor_y, next, WHITE);
-                
+
                 screen_server->flip(screen_server);
 
                 // special case for the first char
-                if(i == 1){
+                if (i == 1)
+                {
                     draw_char(screen_server, 5, 5, self->dialog->text[0], WHITE);
                 }
             }
 
-            // show text options
+            // render text options
+            if (self->dialog->choice1 != NULL)
+            {
+                // first choice
+                draw_textbox(screen_server, self->dialog->choice1,
+                            text_padding, text_padding + (FONT_H + 1) * (bg_lines - 1),
+                            0, true, WHITE, false, 0);
+                if (self->dialog->choice2 != NULL)
+                {
+                    // second choice
+                    draw_textbox(screen_server, self->dialog->choice2,
+                                RESOLUTION_X/2, text_padding + (FONT_H + 1) * (bg_lines - 1),
+                                0, true, WHITE, false, 0);
+                }
+            }
+            screen_server->flip(screen_server);
+
             ScreenServer_dirty_clear(screen_server);
-            
         }
         // do input check loop
         {
