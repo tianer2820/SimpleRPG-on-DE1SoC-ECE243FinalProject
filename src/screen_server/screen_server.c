@@ -56,4 +56,9 @@ void ScreenServer_dirty_all(ScreenServer* self){
     self->dirty_region.y = 0;
     self->dirty_region.w = RESOLUTION_X;
     self->dirty_region.h = RESOLUTION_Y;
+
+    self->dirty_region_back.x = 0;
+    self->dirty_region_back.y = 0;
+    self->dirty_region_back.w = RESOLUTION_X;
+    self->dirty_region_back.h = RESOLUTION_Y;
 }

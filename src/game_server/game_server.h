@@ -153,20 +153,20 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
     {
         // left dirty
         dirty_region.h = RESOLUTION_Y;
-        dirty_region.w = 16;
+        dirty_region.w = 16-1;
         dirty_region.x = RESOLUTION_X / 2 - w;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
         Scene_draw_map(self->scene, screen_server, 0, 0);
         // right dirty
         dirty_region.h = RESOLUTION_Y;
-        dirty_region.w = 16;
-        dirty_region.x = RESOLUTION_X / 2 + w;
+        dirty_region.w = 16-1;
+        dirty_region.x = RESOLUTION_X / 2 + w - 16;
         dirty_region.y = 0;
         screen_server->dirty_region = dirty_region;
         Scene_draw_map(self->scene, screen_server, 0, 0);
         // draw black box
-        draw_rect(screen_server, RESOLUTION_X / 2 - w - 16, 0, 32, RESOLUTION_Y, 0); // left rect
+        draw_rect(screen_server, RESOLUTION_X / 2 - w - 32, 0, 32, RESOLUTION_Y, 0); // left rect
         draw_rect(screen_server, RESOLUTION_X / 2 + w, 0, 32, RESOLUTION_Y, 0);      // right rect
         screen_server->flip(screen_server);
     }
@@ -203,11 +203,16 @@ void GameServer_process(GameServer *self)
         }
         else
         {
+            const int bg_lines = 5;
             // refresh the screen first
             ScreenServer_dirty_all(screen_server);
             GameServer_render(self, screen_server);
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines, 0); // draw black box in front buffer
+            screen_server->flip(screen_server);
+            GameServer_render(self, screen_server);
+            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * bg_lines, 0); // draw black box in back buffer
+
             // render the animation
-            draw_rect(screen_server, 3, 3, RESOLUTION_X - 6, (FONT_H + 1) * 4, 0); // draw black box first
             int i = 0;
             int cursor_x = 5; // start with some padding
             int cursor_y = 5;
@@ -234,7 +239,17 @@ void GameServer_process(GameServer *self)
                     }
                 }
                 i += 1;
+                // draw one more char
+                char next = self->dialog->text[i];
+                if(next != '\0' && next != '\n')
+                    draw_char(screen_server, cursor_x, cursor_y, next, WHITE);
+                
                 screen_server->flip(screen_server);
+
+                // special case for the first char
+                if(i == 1){
+                    draw_char(screen_server, 5, 5, self->dialog->text[0], WHITE);
+                }
             }
             self->dialog_animation_done = true;
             ScreenServer_dirty_clear(screen_server);
