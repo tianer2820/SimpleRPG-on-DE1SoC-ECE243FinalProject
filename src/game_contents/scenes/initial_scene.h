@@ -78,11 +78,11 @@ Dialog dialog_old_paper1;
 Dialog dialog_old_paper2;
 char* dialog_old_paper_text1 = "\
 This is our third attempt on this dungeon. We\n\
-finally came to the bottom this time. With no\n\
-luck, we found nothing here except books with";
+finally came to the bottom this time. With no luck,\n\
+we found nothing here except books with symbols we";
 char* dialog_old_paper_text2 = "\
-symbols we can't read. We are taking them back\n\
-anyway. Maybe they worth something.";
+can't read. We are taking them back anyway. Maybe\n\
+they worth something.";
 char* dialog_old_paper_choice1 = "F: Continue";
 char* dialog_old_paper_choice2 = "F: Close";
 
