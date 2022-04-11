@@ -5,5 +5,7 @@
 
 Scene scene_initial;
 Scene scene_hallway;
+Scene scene_village1;
+Scene scene_village2;
 
 #endif // SCENES_GLOBALS_H

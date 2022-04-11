@@ -47,21 +47,25 @@ const int mapdata_hallway_layer2[] = {
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 };
-// const int mapdata_hallway_layer3[] = {
-// };
-// const int mapdata_hallway_layer4[] = {
-// };
+
 
 Tilemap tilemap_hallway_layer1;
 Tilemap tilemap_hallway_layer2;
-// Tilemap tilemap_hallway_layer3;
-// Tilemap tilemap_hallway_layer4;
+
 
 InteractPoint point_back_to_initial;
-const char* point_TEMPLATE_label = "To lecture room";
+const char* point_back_to_initial_label = "To lecture room";
 void point_back_to_initital_interact(InteractPoint* self){
     GameServer_load_scene(game_server, &scene_initial);
     GameServer_move_player(game_server, 2, 2);
+}
+
+InteractPoint point_to_outside1;
+InteractPoint point_to_outside2;
+const char* point_to_outside_label = "To outside";
+void point_to_outside_interact(InteractPoint* self){
+    GameServer_load_scene(game_server, &scene_village1);
+    GameServer_move_player(game_server, 1, 6);
 }
 
 
@@ -72,11 +76,10 @@ void scene_hallway_setup(Scene *self)
     game_server->player = (Actor*)&actor_player;
     GameServer_move_player(game_server, 0, 7);
 
-    // setup NPC
-    // add npc here..
-
     // setup interact points
     game_server->interact_points[0] = &point_back_to_initial;
+    game_server->interact_points[1] = &point_to_outside1;
+    game_server->interact_points[2] = &point_to_outside2;
 }
 
 
@@ -101,10 +104,19 @@ void init_scene_hallway()
     scene_hallway.setup = scene_hallway_setup;
 
     // interact points
-    point_back_to_initial.action_name_str = point_TEMPLATE_label;
+    point_back_to_initial.action_name_str = point_back_to_initial_label;
     point_back_to_initial.interact = point_back_to_initital_interact;
     point_back_to_initial.x = 1;
     point_back_to_initial.y = 7;
+
+    point_to_outside1.action_name_str = point_to_outside_label;
+    point_to_outside1.interact = point_to_outside_interact;
+    point_to_outside1.x = 18;
+    point_to_outside1.y = 6;
+    point_to_outside2.action_name_str = point_to_outside_label;
+    point_to_outside2.interact = point_to_outside_interact;
+    point_to_outside2.x = 18;
+    point_to_outside2.y = 7;
 }
 
 #endif // HALLWAY_SCENE_H

@@ -34,7 +34,7 @@ Tilemap tilemap_TEMPLATE_layer3;
 Tilemap tilemap_TEMPLATE_layer4;
 
 InteractPoint point_TEMPLATE;
-const char* point_TEMPLATE_label = "To lecture room";
+const char* point_back_to_initial_label = "To lecture room";
 void point_back_to_initital_interact(InteractPoint* self){
     GameServer_load_scene(game_server, &scene_TEMPLATE);
     GameServer_move_player(game_server, 0, 0);
@@ -77,7 +77,7 @@ void init_scene_TEMPLATE()
     scene_TEMPLATE.setup = scene_TEMPLATE_setup;
 
     // interact points
-    point_TEMPLATE.action_name_str = point_TEMPLATE_label;
+    point_TEMPLATE.action_name_str = point_back_to_initial_label;
     point_TEMPLATE.interact = point_back_to_initital_interact;
     point_TEMPLATE.x = 1;
     point_TEMPLATE.y = 7;
