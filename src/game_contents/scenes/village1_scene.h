@@ -14,6 +14,7 @@
 #include "../resources.h"
 #include "../tilesets.h"
 #include "../player.h"
+#include "../farmer.h"
 
 const int mapdata_village1_layer1[] = {
 565,565,565,0,0,0,0,566,566,566,566,566,0,0,0,560,560,560,560,560,
@@ -101,7 +102,8 @@ void scene_village1_setup(Scene *self)
     GameServer_move_player(game_server, 0, 0);
 
     // setup NPC
-    // add npc here..
+    game_server->actor_list[1] = &actor_farmer;
+    actor_farmer.set_position(&actor_farmer, 8, 8);
 
     // setup interact points
     // game_server->interact_points[0] = &point_village1;

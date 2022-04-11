@@ -52,18 +52,23 @@ void GameServer_render(GameServer *self, ScreenServer *server)
 
         int x = actor->display_x * 16;
         int y = actor->display_y * 16;
-        draw_img_slice_color(server, x, y, actor->image, actor->color);
-        // mark screen dirty
-        actor_rect.x = x - actor->image.origin_x;
-        actor_rect.y = y - actor->image.origin_y;
-        actor_rect.w = actor->image.w;
-        actor_rect.h = actor->image.h;
-        ScreenServer_dirty_region(server, actor_rect);
+        draw_img_slice_color(server, x, y, actor->image, actor->color);        
 
         // custom draw function if provided
         if (actor->custom_draw != NULL)
             actor->custom_draw(actor);
     }
+    
+    // only mark player space dirty
+    Actor* actor = self->player;
+    int x = actor->display_x * 16;
+    int y = actor->display_y * 16;
+    actor_rect.x = x - actor->image.origin_x;
+    actor_rect.y = y - actor->image.origin_y;
+    actor_rect.w = actor->image.w;
+    actor_rect.h = actor->image.h;
+    ScreenServer_dirty_region(server, actor_rect);
+
     // draw text buttons
     Rect2D text_rect;
     for (i = 0; i < MAX_INTERACT_NUM; i++)

@@ -8,7 +8,7 @@
 enum ACTOR_ID{
     NONE,
     PLAYER,
-    NPC_TEST,
+    NPC,
 };
 
 typedef struct ActorStruct
@@ -41,7 +41,7 @@ Actor* Actor_new(Actor* self){
     Actor* actor = self;
     if (actor == NULL)
     {
-        actor = calloc(1, sizeof(Actor));
+        actor = (Actor*)calloc(1, sizeof(Actor));
     }
     actor->id = NONE;
     actor->name = NULL;
@@ -54,6 +54,7 @@ Actor* Actor_new(Actor* self){
     actor->start = NULL;
     actor->process = NULL;
     actor->custom_draw = NULL;
+    actor->set_position = Actor_set_position;
     return actor;
 }
 

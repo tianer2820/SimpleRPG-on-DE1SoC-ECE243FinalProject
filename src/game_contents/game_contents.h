@@ -4,6 +4,7 @@
 #include "resources.h"
 #include "tilesets.h"
 #include "player.h"
+#include "farmer.h"
 
 #include "scenes/scenes_globals.h"
 #include "scenes/initial_scene.h"
@@ -19,6 +20,7 @@ void init_game_contents(){
 
     
     init_player();
+    init_farmer();
 }
 
 
