@@ -269,10 +269,16 @@ void GameServer_process(GameServer *self)
                 input_server->update(input_server);
                 if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
                 {
+                    while(input_server->key_is_pressed(input_server, K_SCANCODE_F)){
+                        input_server->update(input_server); // wait for release
+                    }
                     ScreenServer_dirty_all(screen_server);
                     self->dialog = self->dialog->next1;
                     break;
                 } else if(input_server->key_is_pressed(input_server, K_SCANCODE_G)){
+                    while(input_server->key_is_pressed(input_server, K_SCANCODE_G)){
+                        input_server->update(input_server); // wait for release
+                    }
                     ScreenServer_dirty_all(screen_server);
                     self->dialog = self->dialog->next2;
                     break;
@@ -324,6 +330,11 @@ void GameServer_process(GameServer *self)
     }
     if (active_button_index >= 0 && input_server->key_is_pressed(input_server, K_SCANCODE_F))
     {
+        while (input_server->key_is_pressed(input_server, K_SCANCODE_F))
+        {
+            input_server->update(input_server); // wait for release
+        }
+        
         self->interact_points[active_button_index]->interact(self->interact_points[active_button_index]);
     }
 }
