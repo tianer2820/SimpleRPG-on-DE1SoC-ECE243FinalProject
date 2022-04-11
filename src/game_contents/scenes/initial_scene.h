@@ -61,13 +61,47 @@ void point_frontdoor_interact(InteractPoint* self){
 }
 
 
+Dialog dialog_new_book;
+char* dialog_new_book_text = "\
+Lecture Notes 37\n\
+Associative Cache Architecture\n\
+......";
+char* dialog_new_book_choice1 = "F: Close";
+InteractPoint point_new_book;
+const char* point_new_book_label = "Read";
+void point_new_book_interact(InteractPoint* self){
+    GameServer_set_dialog(game_server, &dialog_new_book);
+}
+
+
+Dialog dialog_old_paper1;
+Dialog dialog_old_paper2;
+char* dialog_old_paper_text1 = "\
+This is our third attempt on this dungeon. We\n\
+finally came to the bottom this time. With no\n\
+luck, we found nothing here except books with";
+char* dialog_old_paper_text2 = "\
+symbols we can't read. We are taking them back\n\
+anyway. Maybe they worth something.";
+char* dialog_old_paper_choice1 = "F: Continue";
+char* dialog_old_paper_choice2 = "F: Close";
+
+InteractPoint point_old_paper;
+const char* point_old_paper_label = "Read";
+void point_old_paper_interact(InteractPoint* self){
+    GameServer_set_dialog(game_server, &dialog_old_paper1);
+}
+
+
 void scene_initial_setup(Scene* self){
     // setup player
     game_server->actor_list[0] = (Actor*)&actor_player;
     game_server->player = (Actor*)&actor_player;
-    GameServer_move_player(game_server, 6, 11);
+    GameServer_move_player(game_server, 7, 11);
     // add interact points
     game_server->interact_points[0] = &point_front_door;
+    game_server->interact_points[1] = &point_new_book;
+    game_server->interact_points[2] = &point_old_paper;
 
 }
 
@@ -97,6 +131,26 @@ void init_scene_initial(){
     point_front_door.y = 2;
     point_front_door.action_name_str = point_front_door_label;
     point_front_door.interact = point_frontdoor_interact;
+
+    point_new_book.x = 6;
+    point_new_book.y = 11;
+    point_new_book.action_name_str = point_new_book_label;
+    point_new_book.interact = point_new_book_interact;
+    Dialog_new(&dialog_new_book);
+    dialog_new_book.text = dialog_new_book_text;
+    dialog_new_book.choice1 = dialog_new_book_choice1;
+
+    point_old_paper.x = 10;
+    point_old_paper.y = 9;
+    point_old_paper.action_name_str = point_old_paper_label;
+    point_old_paper.interact = point_old_paper_interact;
+    Dialog_new(&dialog_old_paper1);
+    dialog_old_paper1.text = dialog_old_paper_text1;
+    dialog_old_paper1.choice1 = dialog_old_paper_choice1;
+    dialog_old_paper1.next1 = &dialog_old_paper2;
+    Dialog_new(&dialog_old_paper2);
+    dialog_old_paper2.text = dialog_old_paper_text2;
+    dialog_old_paper2.choice1 = dialog_old_paper_choice2;
 }
 
 
