@@ -1,8 +1,11 @@
 
 s = """
-This is our third attempt on this dungeon. We finally came to the bottom this time. With no luck, we found nothing here except books with symbols we can't read. We are taking them back anyway. Maybe they worth something.
-"""
 
+
+Urgent: Soldiers needed. Please contact any border post if interested.
+
+
+"""
 threshold = (320 - 5*2) // 6
 
 
