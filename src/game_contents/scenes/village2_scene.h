@@ -14,7 +14,7 @@
 #include "../resources.h"
 #include "../tilesets.h"
 #include "../player.h"
-#include "../farmer.h"
+#include "../servant.h"
 
 const int mapdata_village2_layer1[] = {
 0,563,563,563,563,563,563,563,563,563,563,563,0,0,0,0,0,0,0,0,
@@ -71,44 +71,44 @@ Tilemap tilemap_village2_layer3;
 
 
 
-// Dialog dialog_farmer;
-// char* dialog_farmer_text = "I've never seen you before. Welcome to our village.";
-// char* dialog_farmer_choice1 = "F: Where I'm I?";
-// char* dialog_farmer_choice2 = "G: Have a nice day.";
+Dialog dialog_servant;
+char* dialog_servant_text = "\
+Hope this mess will end soon... Oh sorry, welcome,\n\
+are you here for a stay?";
+char* dialog_servant_choice1 = "F: What happened?";
+char* dialog_servant_choice2 = "G: No thanks";
 
-// Dialog dialog_farmer_1;
-// char* dialog_farmer_1_text = "\
-// Sorry, I've never left this village so I don't\n\
-// know. If you are looking for hotel, keep walking\n\
-// and you will see one. They may be able to answer\n\
-// your question.";
-// char* dialog_farmer_1_choice1 = "F: Thank you";
+Dialog dialog_servant_1;
+char* dialog_servant_1_text = "\
+We've been attacked by some monsters recently.\n\
+Soldiers are defending this village, but our supply\n\
+won't last too long... Everyone is hopping that the\n\
+hero will appear again.";
+char* dialog_servant_1_choice1 = "F: The hero?";
 
-// InteractPoint point_farmer;
-// const char* point_farmer_label = "Talk";
-// void point_farmer_interact(InteractPoint* self){
-//     GameServer_set_dialog(game_server, &dialog_farmer);
-// }
+Dialog dialog_servant_2;
+char* dialog_servant_2_text = "\
+Yes, long time ago some heros saved the village. It\n\
+is said that the person who can solve the spell in\n\
+the in the ruins will get their power and become\n\
+the next hero.";
+char* dialog_servant_2_choice1 = "F: Where is the ruin?";
+
+Dialog dialog_servant_3;
+char* dialog_servant_3_text = "\
+You want to try? The ruin is at the end of this\n\
+road. No one have ever successfully broken the\n\
+spell, but if you did, don't forget who pointed you\n\
+the way! Wish you the best luck.";
+char* dialog_servant_3_choice1 = "F: Thank you";
 
 
-// Dialog dialog_bulletin_board;
-// char* dialog_bulletin_board_text = "\
-// Urgent: Soldiers needed. Please contact any border\n\
-// post if interested.";
-// char* dialog_bulletin_board_choice1 = "F: Close";
+InteractPoint point_servant;
+const char* point_servant_label = "Talk";
+void point_servant_interact(InteractPoint* self){
+    GameServer_set_dialog(game_server, &dialog_servant);
+}
 
-// InteractPoint point_bulleitin_board;
-// const char* point_bulleitin_board_label = "Bulleitin Board";
-// void point_bulleitin_board_interact(InteractPoint* self){
-//     GameServer_set_dialog(game_server, &dialog_bulletin_board);
-// }
-
-// InteractPoint point_to_right_village;
-// const char* point_to_right_village_label = "Keep going";
-// void point_to_right_village_interact(InteractPoint* self){
-//     GameServer_load_scene(game_server, &scene_village2);
-    
-// }
 
 
 
@@ -117,14 +117,14 @@ void scene_village2_setup(Scene *self)
     // setup player
     game_server->actor_list[0] = (Actor*)&actor_player;
     game_server->player = (Actor*)&actor_player;
-    GameServer_move_player(game_server, 1, 6);
+    GameServer_move_player(game_server, 1, 7);
 
     // setup NPC
-    game_server->actor_list[1] = &actor_farmer;
-    actor_farmer.set_position(&actor_farmer, 8, 8);
+    game_server->actor_list[1] = &actor_servant;
+    actor_servant.set_position(&actor_servant, 4, 6);
 
     // setup interact points
-    // game_server->interact_points[0] = &point_farmer;
+    game_server->interact_points[0] = &point_servant;
     // game_server->interact_points[1] = &point_bulleitin_board;
 }
 
@@ -156,10 +156,10 @@ void init_scene_village2()
     scene_village2.setup = scene_village2_setup;
 
     // interact points
-    // point_farmer.action_name_str = point_farmer_label;
-    // point_farmer.interact = point_farmer_interact;
-    // point_farmer.x = 8;
-    // point_farmer.y = 7;
+    point_servant.action_name_str = point_servant_label;
+    point_servant.interact = point_servant_interact;
+    point_servant.x = 4;
+    point_servant.y = 7;
 
     // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
     // point_bulleitin_board.interact = point_bulleitin_board_interact;
@@ -167,14 +167,22 @@ void init_scene_village2()
     // point_bulleitin_board.y = 9;
 
     // dialog
-    // Dialog_new(&dialog_farmer);
-    // dialog_farmer.text = dialog_farmer_text;
-    // dialog_farmer.choice1 = dialog_farmer_choice1;
-    // dialog_farmer.choice2 = dialog_farmer_choice2;
-    // dialog_farmer.next1 = &dialog_farmer_1;
-    // Dialog_new(&dialog_farmer_1);
-    // dialog_farmer_1.text = dialog_farmer_1_text;
-    // dialog_farmer_1.choice1 = dialog_farmer_1_choice1;
+    Dialog_new(&dialog_servant);
+    dialog_servant.text = dialog_servant_text;
+    dialog_servant.choice1 = dialog_servant_choice1;
+    dialog_servant.choice2 = dialog_servant_choice2;
+    dialog_servant.next1 = &dialog_servant_1;
+    Dialog_new(&dialog_servant_1);
+    dialog_servant_1.text = dialog_servant_1_text;
+    dialog_servant_1.choice1 = dialog_servant_1_choice1;
+    dialog_servant_1.next1 = &dialog_servant_2;
+    Dialog_new(&dialog_servant_2);
+    dialog_servant_2.text = dialog_servant_2_text;
+    dialog_servant_2.choice1 = dialog_servant_2_choice1;
+    dialog_servant_2.next1 = &dialog_servant_3;
+    Dialog_new(&dialog_servant_3);
+    dialog_servant_3.text = dialog_servant_3_text;
+    dialog_servant_3.choice1 = dialog_servant_3_choice1;
 
     // Dialog_new(&dialog_bulletin_board);
     // dialog_bulletin_board.text = dialog_bulletin_board_text;

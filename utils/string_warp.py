@@ -2,7 +2,8 @@
 s = """
 
 
-Urgent: Soldiers needed. Please contact any border post if interested.
+You want to try? The ruin is at the end of this road. No one have ever successfully broken the spell, but if you did, don't forget who pointed you the way! Wish you the best luck.
+
 
 
 """
