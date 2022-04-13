@@ -192,7 +192,7 @@ void GameServer_process(GameServer *self)
     {
         // do dialog animation
         {
-            const int bg_lines = 5;
+            const int bg_lines = 6;
             const int text_padding = 5;
             // refresh the screen first
             ScreenServer_dirty_all(screen_server);
