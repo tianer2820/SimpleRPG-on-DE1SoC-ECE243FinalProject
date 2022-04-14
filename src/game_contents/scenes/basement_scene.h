@@ -77,6 +77,34 @@ void points_inc_hex_interact(InteractPoint* self){
     hex_set_value(hex, hex->value + 1);
 }
 
+InteractPoint point_tp_in;
+const char* point_tp_in_label = "Enter";
+void point_tp_in_interact(InteractPoint* self){
+    int password[] = {0xE, 0xC, 0xE, 0x2, 0x4, 0x3};
+    int i;
+    bool wrong = false;
+    for (i = 0; i < 6; i++)
+    {
+        ActorHEXDisplay* hex = get_hex_display(i);
+        if(hex->value != password[i]){
+            // wrong, set dialog maybe
+            wrong = true;
+            break;
+        }
+    }
+    if(!wrong){
+        // tp player
+        GameServer_move_player(game_server, 12, 4);
+    }
+}
+
+
+InteractPoint point_tp_out;
+const char* point_tp_out_label = "Exit";
+void point_tp_out_interact(InteractPoint* self){
+    GameServer_move_player(game_server, 12, 7);
+}
+
 
 
 void scene_basement_setup(Scene *self)
@@ -105,7 +133,8 @@ void scene_basement_setup(Scene *self)
     }
     
     game_server->interact_points[6] = &point_password;
-    // game_server->interact_points[1] = &point_bulleitin_board;
+    game_server->interact_points[7] = &point_tp_in;
+    game_server->interact_points[8] = &point_tp_out;
 }
 
 
@@ -152,6 +181,16 @@ void init_scene_basement()
     point_password.interact = point_password_interact;
     point_password.x = 3;
     point_password.y = 8;
+
+    point_tp_in.action_name_str = point_tp_in_label;
+    point_tp_in.interact = point_tp_in_interact;
+    point_tp_in.x = 12;
+    point_tp_in.y = 7;
+
+    point_tp_out.action_name_str = point_tp_out_label;
+    point_tp_out.interact = point_tp_out_interact;
+    point_tp_out.x = 12;
+    point_tp_out.y = 4;
 
     // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
     // point_bulleitin_board.interact = point_bulleitin_board_interact;
