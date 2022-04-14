@@ -82,11 +82,13 @@ char *dialog_end_choice1 = "F: ...";
 
 Dialog dialog_end1;
 char *dialog_end1_text = "\
-Thanks for playing\n\
-Tileset from: https://pipoya.itch.io/pipoya-rpg-tileset-32x32\n\
-Characters from: https://superdark.itch.io/16x16-free-npc-pack\n\
+Thanks for playing. Pixel arts from:\n\
+pipoya.itch.io/pipoya-rpg-tileset-32x32\n\
+superdark.itch.io/16x16-free-npc-pack\n\
+snoopethduckduck.itch.io/guns\n\
+penusbmic.itch.io/monster-pack-i\n\
 ";
-char *dialog_end1_choice1 = "F: ...";
+char *dialog_end1_choice1 = "";
 
 void weapon_animation(Dialog* self){
     ScreenServer_dirty_all(screen_server);
@@ -125,7 +127,7 @@ void scene_ruins_setup(Scene *self)
     GameServer_move_player(game_server, 1, 7);
 
     // monster & soldiers if weapon picked up
-    if(weapon_pickedup || true){
+    if(weapon_pickedup){
         game_server->actor_list[1] = (Actor*)&actor_monster;
         actor_monster.block_x = 12;
         actor_monster.block_y = 7;

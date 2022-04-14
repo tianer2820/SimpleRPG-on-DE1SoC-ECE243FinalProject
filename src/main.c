@@ -48,8 +48,8 @@ int main(int argc, char **argv)
         // init game content
         init_game_contents();
         init_scene_initial();
-        // GameServer_load_scene(game_server, &scene_initial);
-        GameServer_load_scene(game_server, &scene_ruins);
+        GameServer_load_scene(game_server, &scene_initial);
+        // GameServer_load_scene(game_server, &scene_ruins);
 
 
         // initial dialog
@@ -65,7 +65,7 @@ alone.";
         initial_dialog.next1 = NULL;
         initial_dialog.next2 = &initial_dialog;
         initial_dialog.effect = initial_dialog_effect;
-        // GameServer_set_dialog(game_server, &initial_dialog);
+        GameServer_set_dialog(game_server, &initial_dialog);
 
         
         while (!quit)
