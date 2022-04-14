@@ -1,5 +1,5 @@
 # SimpleRPG on DE1SoC
-This is a final project for UofT ECE243 corse, 2022
+This is a final project for UofT ECE243 course, 2022
 
 ## Overview
 This is a rpg written purely in c and is able to run on the DE1SoC dev board. Some screenshots here:
@@ -13,7 +13,7 @@ This is a rpg written purely in c and is able to run on the DE1SoC dev board. So
 ### On desktop
 This program includes a simple SDL terminal so you can test it on laptops. You can install the SDL2 lib and build it with cmake.
 
-On linux, you can just install SDL2 lib with package manager and build directly with cmake. On Windows and Mac, you will need to modify the top level `CMakeLists.txt` to indecate where you lib is installed.
+On linux, you can just install SDL2 lib with package manager and build directly with cmake. On Windows and Mac, you will need to modify the top level `CMakeLists.txt` to indicate where you lib is installed.
 
 ### On DE1Soc
 Open the `src/proj.amp` with the Monitor program and compile and upload to the board. If that does not work, try creating a new project and add all .c files (except those with sdl in their name, i.e. screen_server_sdl.c etc ) to the project.
