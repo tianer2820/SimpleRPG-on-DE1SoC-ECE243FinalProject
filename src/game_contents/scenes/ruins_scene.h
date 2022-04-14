@@ -14,7 +14,7 @@
 #include "../resources.h"
 #include "../tilesets.h"
 #include "../player.h"
-#include "../servant.h"
+#include "../weapon.h"
 
 const int mapdata_ruins_layer1[] = {
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -69,6 +69,7 @@ void scene_ruins_setup(Scene *self)
     game_server->actor_list[0] = (Actor*)&actor_player;
     game_server->player = (Actor*)&actor_player;
     GameServer_move_player(game_server, 1, 7);
+
 
     // setup interact points
     game_server->interact_points[0] = &point_to_basement;

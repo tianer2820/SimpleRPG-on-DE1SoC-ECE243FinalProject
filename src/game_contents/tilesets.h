@@ -34,6 +34,7 @@ ShortImage character_set_img;
 Tileset character_set;
 
 ShortImage hex_set_img;
+ShortImage gun_img;
 
 void init_tilesets(){
     // init image
@@ -52,6 +53,10 @@ void init_tilesets(){
     hex_set_img.data = RES_HEX_DISPLAY_DATA;
     hex_set_img.mask = RES_HEX_DISPLAY_MASK;
 
+    gun_img.w = RES_SUPER_GUN_W;
+    gun_img.h = RES_SUPER_GUN_H;
+    gun_img.data = RES_SUPER_GUN_DATA;
+    gun_img.mask = RES_SUPER_GUN_MASK;
 
     // init tileset
     simple_set.img = simple_set_img;

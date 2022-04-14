@@ -92,6 +92,12 @@ void scene_basement_setup(Scene *self)
         game_server->actor_list[i] = (Actor*)get_hex_display(i);
     }
 
+    game_server->actor_list[7] = (Actor*)&actor_weapon;
+    actor_weapon.block_x = 9;
+    actor_weapon.block_y = 3;
+    actor_weapon.display_x = 9;
+    actor_weapon.display_y = 3;
+
     // setup interact points
     for (i = 0; i < 6; i++)
     {
