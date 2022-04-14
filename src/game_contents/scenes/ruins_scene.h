@@ -11,10 +11,12 @@
 #include "../../game_server/scene.h"
 #include "../../game_server/interact_point.h"
 
+#include "../../paint_functions.h"
+
 #include "../resources.h"
 #include "../tilesets.h"
 #include "../player.h"
-#include "../weapon.h"
+#include "../monster.h"
 
 const int mapdata_ruins_layer1[] = {
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -62,6 +64,58 @@ void point_to_basement_interact(InteractPoint* self){
 }
 
 
+Dialog dialog_monster;
+char *dialog_monster_text = "\
+Monster: *roar*";
+char *dialog_monster_choice1 = "F: Use weapon";
+
+Dialog dialog_monster2;
+char *dialog_monster2_text = "\
+You used the weapon";
+char *dialog_monster2_choice1 = "F: ...";
+
+
+Dialog dialog_end;
+char *dialog_end_text = "\
+Achievement: Hero of the village";
+char *dialog_end_choice1 = "F: ...";
+
+Dialog dialog_end1;
+char *dialog_end1_text = "\
+Thanks for playing\n\
+Tileset from: https://pipoya.itch.io/pipoya-rpg-tileset-32x32\n\
+Characters from: https://superdark.itch.io/16x16-free-npc-pack\n\
+";
+char *dialog_end1_choice1 = "F: ...";
+
+void weapon_animation(Dialog* self){
+    ScreenServer_dirty_all(screen_server);
+    GameServer_render(game_server, screen_server);
+    screen_server->flip(screen_server);
+    GameServer_render(game_server, screen_server);
+
+    int i;
+    short color_list[] = {RED, BLUE, YELLOW, GREEN, WHITE, 0, PINK};
+    for (i = 0; i < 20; i++)
+    {
+        draw_line(screen_server,
+                actor_player.base.display_x * 16,
+                actor_player.base.display_y * 16,
+                actor_monster.display_x * 16,
+                actor_monster.display_y * 16, color_list[i % 7]);
+        int j;
+        for (j = 0; j < 4; j++)
+        {
+            screen_server->flip(screen_server);
+        }
+    }
+    ImageSlice_new(&(actor_monster.image));
+    ScreenServer_dirty_all(screen_server);
+    GameServer_render(game_server, screen_server);
+    screen_server->flip(screen_server);
+    // GameServer_set_dialog(game_server, &dialog_end);
+}
+
 
 void scene_ruins_setup(Scene *self)
 {
@@ -70,6 +124,17 @@ void scene_ruins_setup(Scene *self)
     game_server->player = (Actor*)&actor_player;
     GameServer_move_player(game_server, 1, 7);
 
+    // monster & soldiers if weapon picked up
+    if(weapon_pickedup || true){
+        game_server->actor_list[1] = (Actor*)&actor_monster;
+        actor_monster.block_x = 12;
+        actor_monster.block_y = 7;
+        actor_monster.display_x = 12;
+        actor_monster.display_y = 7;
+        // add dialog
+        actor_player.flip_x = false;
+        GameServer_set_dialog(game_server, &dialog_monster);
+    }
 
     // setup interact points
     game_server->interact_points[0] = &point_to_basement;
@@ -109,15 +174,24 @@ void init_scene_ruins()
     // point_bulleitin_board.y = 9;
 
     // dialog
-    // Dialog_new(&dialog_servant);
-    // dialog_servant.text = dialog_servant_text;
-    // dialog_servant.choice1 = dialog_servant_choice1;
-    // dialog_servant.choice2 = dialog_servant_choice2;
-    // dialog_servant.next1 = &dialog_servant_1;
-    // Dialog_new(&dialog_servant_1);
-    // dialog_servant_1.text = dialog_servant_1_text;
-    // dialog_servant_1.choice1 = dialog_servant_1_choice1;
-    // dialog_servant_1.next1 = &dialog_servant_2;
+    Dialog_new(&dialog_monster);
+    dialog_monster.text = dialog_monster_text;
+    dialog_monster.choice1 = dialog_monster_choice1;
+    dialog_monster.next1 = &dialog_monster2;
+    Dialog_new(&dialog_monster2);
+    dialog_monster2.text = dialog_monster2_text;
+    dialog_monster2.choice1 = dialog_monster2_choice1;
+    dialog_monster2.effect = &weapon_animation;
+    dialog_monster2.next1 = &dialog_end;
+
+
+    Dialog_new(&dialog_end);
+    dialog_end.text = dialog_end_text;
+    dialog_end.choice1 = dialog_end1_choice1;
+    dialog_end.next1 = &dialog_end1;
+    Dialog_new(&dialog_end1);
+    dialog_end1.text = dialog_end1_text;
+    dialog_end1.choice1 = dialog_end1_choice1;
     // Dialog_new(&dialog_servant_2);
     // dialog_servant_2.text = dialog_servant_2_text;
     // dialog_servant_2.choice1 = dialog_servant_2_choice1;

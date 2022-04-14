@@ -52,15 +52,15 @@ void GameServer_render(GameServer *self, ScreenServer *server)
 
         int x = actor->display_x * 16;
         int y = actor->display_y * 16;
-        draw_img_slice_color(server, x, y, actor->image, actor->color);        
+        draw_img_slice_color(server, x, y, actor->image, actor->color);
 
         // custom draw function if provided
         if (actor->custom_draw != NULL)
             actor->custom_draw(actor);
     }
-    
+
     // only mark player space dirty
-    Actor* actor = self->player;
+    Actor *actor = self->player;
     int x = actor->display_x * 16;
     int y = actor->display_y * 16;
     actor_rect.x = x - actor->image.origin_x;
@@ -147,8 +147,8 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
     const int inc_per_frame = 2;
     for (w = 0; w < RESOLUTION_X / 2; w += inc_per_frame)
     {
-        draw_rect(screen_server, w - inc_per_frame, 0, inc_per_frame * 2, RESOLUTION_Y, 0);                // left rect
-        draw_rect(screen_server, RESOLUTION_X - w, 0, inc_per_frame * 2, RESOLUTION_Y, 0); // right rect
+        draw_rect(screen_server, w - inc_per_frame, 0, inc_per_frame * 2, RESOLUTION_Y, 0); // left rect
+        draw_rect(screen_server, RESOLUTION_X - w, 0, inc_per_frame * 2, RESOLUTION_Y, 0);  // right rect
         screen_server->flip(screen_server);
     }
     Rect2D dirty_region;
@@ -248,23 +248,19 @@ void GameServer_process(GameServer *self)
             {
                 // first choice
                 draw_textbox(screen_server, self->dialog->choice1,
-                            text_padding, text_padding + (FONT_H + 1) * (bg_lines - 1),
-                            0, true, WHITE, false, 0);
+                             text_padding, text_padding + (FONT_H + 1) * (bg_lines - 1),
+                             0, true, WHITE, false, 0);
                 if (self->dialog->choice2 != NULL)
                 {
                     // second choice
                     draw_textbox(screen_server, self->dialog->choice2,
-                                RESOLUTION_X/2, text_padding + (FONT_H + 1) * (bg_lines - 1),
-                                0, true, WHITE, false, 0);
+                                 RESOLUTION_X / 2, text_padding + (FONT_H + 1) * (bg_lines - 1),
+                                 0, true, WHITE, false, 0);
                 }
             }
             screen_server->flip(screen_server);
 
             ScreenServer_dirty_clear(screen_server);
-        }
-        // do dialog action/effect (after render, before dialog switch)
-        if(self->dialog->effect != NULL){
-            self->dialog->effect(self->dialog);
         }
         // do input check loop
         {
@@ -274,15 +270,27 @@ void GameServer_process(GameServer *self)
                 input_server->update(input_server);
                 if (input_server->key_is_pressed(input_server, K_SCANCODE_F))
                 {
-                    while(input_server->key_is_pressed(input_server, K_SCANCODE_F)){
+                    while (input_server->key_is_pressed(input_server, K_SCANCODE_F))
+                    {
                         input_server->update(input_server); // wait for release
+                    }
+                    if (self->dialog->effect != NULL) // do dialog action/effect
+                    {
+                        self->dialog->effect(self->dialog);
                     }
                     ScreenServer_dirty_all(screen_server);
                     self->dialog = self->dialog->next1;
                     break;
-                } else if(input_server->key_is_pressed(input_server, K_SCANCODE_G)){
-                    while(input_server->key_is_pressed(input_server, K_SCANCODE_G)){
+                }
+                else if (input_server->key_is_pressed(input_server, K_SCANCODE_G))
+                {
+                    while (input_server->key_is_pressed(input_server, K_SCANCODE_G))
+                    {
                         input_server->update(input_server); // wait for release
+                    }
+                    if (self->dialog->effect != NULL) // do dialog action/effect
+                    {
+                        self->dialog->effect(self->dialog);
                     }
                     ScreenServer_dirty_all(screen_server);
                     self->dialog = self->dialog->next2;
@@ -290,7 +298,6 @@ void GameServer_process(GameServer *self)
                 }
             }
         }
-        
     }
 
     // do actor process
@@ -339,7 +346,7 @@ void GameServer_process(GameServer *self)
         {
             input_server->update(input_server); // wait for release
         }
-        
+
         self->interact_points[active_button_index]->interact(self->interact_points[active_button_index]);
     }
 }

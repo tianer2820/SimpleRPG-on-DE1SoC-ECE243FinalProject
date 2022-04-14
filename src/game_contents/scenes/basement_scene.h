@@ -15,6 +15,7 @@
 #include "../tilesets.h"
 #include "../player.h"
 #include "../hex_display.h"
+#include "../weapon.h"
 
 const int mapdata_basement_layer1[] = {
 467,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,467,

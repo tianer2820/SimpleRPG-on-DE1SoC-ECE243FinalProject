@@ -9,6 +9,7 @@
 #include "servant.h"
 #include "hex_display.h"
 #include "weapon.h"
+#include "monster.h"
 
 #include "scenes/scenes_globals.h"
 #include "scenes/initial_scene.h"
@@ -27,6 +28,7 @@ void init_game_contents(){
     init_servant();
     init_hex();
     init_weapon();
+    init_monster();
 
     init_scene_initial();
     init_scene_hallway();
