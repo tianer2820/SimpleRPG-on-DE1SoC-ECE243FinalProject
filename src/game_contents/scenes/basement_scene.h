@@ -54,12 +54,20 @@ Tilemap tilemap_basement_layer1;
 Tilemap tilemap_basement_layer2;
 
 
+Dialog dialog_password;
+char *dialog_password_text = "\
+Engineers save the world!\n\
+\n\
+1110 1100 1110\n\
+0010 0100 0011";
+char *dialog_password_choice1 = "F: Ok..";
 
-// InteractPoint point_to_basement;
-// const char* point_to_basement_label = "Enter";
-// void point_to_basement_interact(InteractPoint* self){
-//     GameServer_load_scene(game_server, &scene_basement);
-// }
+
+InteractPoint point_password;
+const char* point_password_label = "Read";
+void point_password_interact(InteractPoint* self){
+    GameServer_set_dialog(game_server, &dialog_password);
+}
 
 InteractPoint points_inc_hex[6];
 const char* points_inc_hex_label = "Add one";
@@ -90,7 +98,7 @@ void scene_basement_setup(Scene *self)
         game_server->interact_points[i] = points_inc_hex + i;
     }
     
-    // game_server->interact_points[0] = &point_to_basement;
+    game_server->interact_points[6] = &point_password;
     // game_server->interact_points[1] = &point_bulleitin_board;
 }
 
@@ -134,10 +142,10 @@ void init_scene_basement()
         points_inc_hex[i].x = i + 5;
         points_inc_hex[i].y = 7;
     }
-    // point_to_basement.action_name_str = point_to_basement_label;
-    // point_to_basement.interact = point_to_basement_interact;
-    // point_to_basement.x = 6;
-    // point_to_basement.y = 7;
+    point_password.action_name_str = point_password_label;
+    point_password.interact = point_password_interact;
+    point_password.x = 3;
+    point_password.y = 8;
 
     // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
     // point_bulleitin_board.interact = point_bulleitin_board_interact;
@@ -145,11 +153,10 @@ void init_scene_basement()
     // point_bulleitin_board.y = 9;
 
     // dialog
-    // Dialog_new(&dialog_servant);
-    // dialog_servant.text = dialog_servant_text;
-    // dialog_servant.choice1 = dialog_servant_choice1;
-    // dialog_servant.choice2 = dialog_servant_choice2;
-    // dialog_servant.next1 = &dialog_servant_1;
+    Dialog_new(&dialog_password);
+    dialog_password.text = dialog_password_text;
+    dialog_password.choice1 = dialog_password_choice1;
+
     // Dialog_new(&dialog_servant_1);
     // dialog_servant_1.text = dialog_servant_1_text;
     // dialog_servant_1.choice1 = dialog_servant_1_choice1;

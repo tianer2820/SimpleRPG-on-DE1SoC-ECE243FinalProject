@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.8" tiledversion="1.8.2" name="main16" tilewidth="16" tileheight="16" tilecount="1064" columns="8">
- <image source="Pipoya RPG Tileset 32x32 (chosen)/[Base]BaseChip_pipo 16x16 None.png" width="128" height="2128"/>
+ <image source="imgs/All Tiles.png" width="128" height="2128"/>
  <tile id="0">
   <properties>
    <property name="is_solid" type="bool" value="false"/>
@@ -1673,12 +1673,12 @@
  </tile>
  <tile id="334">
   <properties>
-   <property name="is_solid" type="bool" value="true"/>
+   <property name="is_solid" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="335">
   <properties>
-   <property name="is_solid" type="bool" value="true"/>
+   <property name="is_solid" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="336">
