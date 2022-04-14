@@ -8,5 +8,6 @@ Scene scene_hallway;
 Scene scene_village1;
 Scene scene_village2;
 Scene scene_ruins;
+Scene scene_basement;
 
 #endif // SCENES_GLOBALS_H

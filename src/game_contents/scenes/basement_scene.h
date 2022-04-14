@@ -1,5 +1,5 @@
-#if !defined(RUINS_SCENE_H)
-#define RUINS_SCENE_H
+#if !defined(BASEMENT_SCENE_H)
+#define BASEMENT_SCENE_H
 
 #include <stdlib.h>
 #include "../../globals.h"
@@ -16,7 +16,7 @@
 #include "../player.h"
 #include "../servant.h"
 
-const int mapdata_ruins_layer1[] = {
+const int mapdata_basement_layer1[] = {
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -32,7 +32,7 @@ const int mapdata_ruins_layer1[] = {
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 };
-const int mapdata_ruins_layer2[] = {
+const int mapdata_basement_layer2[] = {
 -1,-1,-1,-1,-1,-1,-1,46,47,-1,-1,-1,14,15,-1,-1,-1,-1,-1,-1,
 -1,-1,14,15,-1,-1,-1,-1,-1,-1,-1,-1,22,23,-1,-1,-1,-1,-1,-1,
 906,-1,22,23,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,46,47,14,15,-1,
@@ -50,20 +50,20 @@ const int mapdata_ruins_layer2[] = {
 };
 
 
-Tilemap tilemap_ruins_layer1;
-Tilemap tilemap_ruins_layer2;
+Tilemap tilemap_basement_layer1;
+Tilemap tilemap_basement_layer2;
 
 
 
-InteractPoint point_to_basement;
-const char* point_to_basement_label = "Enter";
-void point_to_basement_interact(InteractPoint* self){
-    GameServer_load_scene(game_server, &scene_basement);
-}
+// InteractPoint point_to_basement;
+// const char* point_to_basement_label = "Enter";
+// void point_to_basement_interact(InteractPoint* self){
+//     GameServer_load_scene(game_server, &scene_basement);
+// }
 
 
 
-void scene_ruins_setup(Scene *self)
+void scene_basement_setup(Scene *self)
 {
     // setup player
     game_server->actor_list[0] = (Actor*)&actor_player;
@@ -71,36 +71,36 @@ void scene_ruins_setup(Scene *self)
     GameServer_move_player(game_server, 1, 7);
 
     // setup interact points
-    game_server->interact_points[0] = &point_to_basement;
+    // game_server->interact_points[0] = &point_to_basement;
     // game_server->interact_points[1] = &point_bulleitin_board;
 }
 
 
-void init_scene_ruins()
+void init_scene_basement()
 {
     // tilemap layers
-    tilemap_ruins_layer1.tileset = &simple_set;
-    tilemap_ruins_layer1.map_data = mapdata_ruins_layer1;
-    tilemap_ruins_layer1.w = 20;
-    tilemap_ruins_layer1.h = 14;
+    tilemap_basement_layer1.tileset = &simple_set;
+    tilemap_basement_layer1.map_data = mapdata_basement_layer1;
+    tilemap_basement_layer1.w = 20;
+    tilemap_basement_layer1.h = 14;
 
-    tilemap_ruins_layer2.tileset = &simple_set;
-    tilemap_ruins_layer2.map_data = mapdata_ruins_layer2;
-    tilemap_ruins_layer2.w = 20;
-    tilemap_ruins_layer2.h = 14;
+    tilemap_basement_layer2.tileset = &simple_set;
+    tilemap_basement_layer2.map_data = mapdata_basement_layer2;
+    tilemap_basement_layer2.w = 20;
+    tilemap_basement_layer2.h = 14;
 
     // scene
-    Scene_new(&scene_ruins); // clear init memory
-    scene_ruins.map_layers[0] = &tilemap_ruins_layer1;
-    scene_ruins.map_layers[1] = &tilemap_ruins_layer2;
-    scene_ruins.ambient_color = WHITE;
-    scene_ruins.setup = scene_ruins_setup;
+    Scene_new(&scene_basement); // clear init memory
+    scene_basement.map_layers[0] = &tilemap_basement_layer1;
+    scene_basement.map_layers[1] = &tilemap_basement_layer2;
+    scene_basement.ambient_color = WHITE;
+    scene_basement.setup = scene_basement_setup;
 
     // interact points
-    point_to_basement.action_name_str = point_to_basement_label;
-    point_to_basement.interact = point_to_basement_interact;
-    point_to_basement.x = 6;
-    point_to_basement.y = 7;
+    // point_to_basement.action_name_str = point_to_basement_label;
+    // point_to_basement.interact = point_to_basement_interact;
+    // point_to_basement.x = 6;
+    // point_to_basement.y = 7;
 
     // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
     // point_bulleitin_board.interact = point_bulleitin_board_interact;
@@ -130,4 +130,4 @@ void init_scene_ruins()
     // dialog_bulletin_board.choice1 = dialog_bulletin_board_choice1;
 }
 
-#endif // RUINS_SCENE_H
+#endif // BASEMENT_SCENE_H

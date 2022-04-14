@@ -13,6 +13,7 @@
 #include "scenes/village1_scene.h"
 #include "scenes/village2_scene.h"
 #include "scenes/ruins_scene.h"
+#include "scenes/basement_scene.h"
 
 /* all in one place to init game contents. */
 void init_game_contents(){
@@ -27,6 +28,7 @@ void init_game_contents(){
     init_scene_village1();
     init_scene_village2();
     init_scene_ruins();
+    init_scene_basement();
 }
 
 

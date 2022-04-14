@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     init_scene_initial();
     // GameServer_load_scene(game_server, &scene_initial);
 
-    GameServer_load_scene(game_server, &scene_village1);
+    GameServer_load_scene(game_server, &scene_ruins);
 
     // initial dialog
     Dialog initial_dialog;
