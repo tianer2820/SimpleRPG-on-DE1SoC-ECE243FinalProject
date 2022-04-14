@@ -23,6 +23,35 @@ ActorHEXDisplay actor_hex3;
 ActorHEXDisplay actor_hex4;
 ActorHEXDisplay actor_hex5;
 
+ActorHEXDisplay* get_hex_display(int n){
+    ActorHEXDisplay* hex;
+    switch (n)
+    {
+    case 0:
+        hex = &actor_hex0;
+        break;
+    case 1:
+        hex = &actor_hex1;
+        break;
+    case 2:
+        hex = &actor_hex2;
+        break;
+    case 3:
+        hex = &actor_hex3;
+        break;
+    case 4:
+        hex = &actor_hex4;
+        break;
+    case 5:
+        hex = &actor_hex5;
+        break;
+    default:
+        hex = NULL;
+        break;
+    }
+    return hex;
+}
+
 void hex_set_value(ActorHEXDisplay* self, int val){
     val %= 16;
     self->value = val;
@@ -36,6 +65,13 @@ void hex_set_value(ActorHEXDisplay* self, int val){
     slice.origin_x = 0;
     slice.origin_y = 16;
     self->base.image = slice;
+    // set screen dirty
+    Rect2D rect;
+    rect.x = self->base.display_x * 16;
+    rect.y = self->base.display_y * 16;
+    rect.w = 16;
+    rect.h = 32;
+    ScreenServer_dirty_region(screen_server, rect);
 }
 
 void init_hex()

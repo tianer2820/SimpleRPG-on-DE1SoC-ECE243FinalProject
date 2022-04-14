@@ -61,6 +61,14 @@ Tilemap tilemap_basement_layer2;
 //     GameServer_load_scene(game_server, &scene_basement);
 // }
 
+InteractPoint points_inc_hex[6];
+const char* points_inc_hex_label = "Add one";
+void points_inc_hex_interact(InteractPoint* self){
+    int number = (actor_player.base.block_x - 5);
+    ActorHEXDisplay* hex = get_hex_display(number);
+    hex_set_value(hex, hex->value + 1);
+}
+
 
 
 void scene_basement_setup(Scene *self)
@@ -70,14 +78,18 @@ void scene_basement_setup(Scene *self)
     game_server->player = (Actor*)&actor_player;
     GameServer_move_player(game_server, 1, 7);
 
-    game_server->actor_list[1] = (Actor*)&actor_hex0;
-    game_server->actor_list[2] = (Actor*)&actor_hex1;
-    game_server->actor_list[3] = (Actor*)&actor_hex2;
-    game_server->actor_list[4] = (Actor*)&actor_hex3;
-    game_server->actor_list[5] = (Actor*)&actor_hex4;
-    game_server->actor_list[0] = (Actor*)&actor_hex5;
+    int i;
+    for (i = 0; i < 6; i++)
+    {
+        game_server->actor_list[i] = (Actor*)get_hex_display(i);
+    }
 
     // setup interact points
+    for (i = 0; i < 6; i++)
+    {
+        game_server->interact_points[i] = points_inc_hex + i;
+    }
+    
     // game_server->interact_points[0] = &point_to_basement;
     // game_server->interact_points[1] = &point_bulleitin_board;
 }
@@ -107,31 +119,7 @@ void init_scene_basement()
     int i;
     for (i = 0; i < 6; i++)
     {
-        ActorHEXDisplay* hex;
-        switch (i)
-        {
-        case 0:
-            hex = &actor_hex0;
-            break;
-        case 1:
-            hex = &actor_hex1;
-            break;
-        case 2:
-            hex = &actor_hex2;
-            break;
-        case 3:
-            hex = &actor_hex3;
-            break;
-        case 4:
-            hex = &actor_hex4;
-            break;
-        case 5:
-            hex = &actor_hex5;
-            break;
-        default:
-            hex = NULL;
-            break;
-        }
+        ActorHEXDisplay* hex = get_hex_display(i);
         hex->base.block_x = i + 5;
         hex->base.display_x = i + 5;
         hex->base.block_y = 6;
@@ -139,6 +127,13 @@ void init_scene_basement()
     }
 
     // interact points
+    for (i = 0; i < 6; i++)
+    {
+        points_inc_hex[i].action_name_str = points_inc_hex_label;
+        points_inc_hex[i].interact = points_inc_hex_interact;
+        points_inc_hex[i].x = i + 5;
+        points_inc_hex[i].y = 7;
+    }
     // point_to_basement.action_name_str = point_to_basement_label;
     // point_to_basement.interact = point_to_basement_interact;
     // point_to_basement.x = 6;
