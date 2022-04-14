@@ -147,7 +147,7 @@ void GameServer_load_scene(GameServer *self, Scene *scene)
     const int inc_per_frame = 2;
     for (w = 0; w < RESOLUTION_X / 2; w += inc_per_frame)
     {
-        draw_rect(screen_server, w, 0, inc_per_frame * 2, RESOLUTION_Y, 0);                // left rect
+        draw_rect(screen_server, w - inc_per_frame, 0, inc_per_frame * 2, RESOLUTION_Y, 0);                // left rect
         draw_rect(screen_server, RESOLUTION_X - w, 0, inc_per_frame * 2, RESOLUTION_Y, 0); // right rect
         screen_server->flip(screen_server);
     }
