@@ -109,7 +109,11 @@ void point_servant_interact(InteractPoint* self){
     GameServer_set_dialog(game_server, &dialog_servant);
 }
 
-
+InteractPoint point_to_ruins;
+const char* point_to_ruins_label = "To Ruins";
+void point_to_ruins_interact(InteractPoint* self){
+    GameServer_load_scene(game_server, &scene_ruins);
+}
 
 
 void scene_village2_setup(Scene *self)
@@ -125,7 +129,7 @@ void scene_village2_setup(Scene *self)
 
     // setup interact points
     game_server->interact_points[0] = &point_servant;
-    // game_server->interact_points[1] = &point_bulleitin_board;
+    game_server->interact_points[1] = &point_to_ruins;
 }
 
 
@@ -161,10 +165,10 @@ void init_scene_village2()
     point_servant.x = 4;
     point_servant.y = 7;
 
-    // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
-    // point_bulleitin_board.interact = point_bulleitin_board_interact;
-    // point_bulleitin_board.x = 13;
-    // point_bulleitin_board.y = 9;
+    point_to_ruins.action_name_str = point_to_ruins_label;
+    point_to_ruins.interact = point_to_ruins_interact;
+    point_to_ruins.x = 19;
+    point_to_ruins.y = 7;
 
     // dialog
     Dialog_new(&dialog_servant);
@@ -184,9 +188,6 @@ void init_scene_village2()
     dialog_servant_3.text = dialog_servant_3_text;
     dialog_servant_3.choice1 = dialog_servant_3_choice1;
 
-    // Dialog_new(&dialog_bulletin_board);
-    // dialog_bulletin_board.text = dialog_bulletin_board_text;
-    // dialog_bulletin_board.choice1 = dialog_bulletin_board_choice1;
 }
 
 #endif // VILLAGE2_SCENE_H
