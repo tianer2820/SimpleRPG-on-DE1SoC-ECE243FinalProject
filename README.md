@@ -17,3 +17,13 @@ On linux, you can just install SDL2 lib with package manager and build directly 
 
 ### On DE1Soc
 Open the `src/proj.amp` with the Monitor program and compile and upload to the board. If that does not work, try creating a new project and add all .c files (except those with sdl in their name, i.e. screen_server_sdl.c etc ) to the project.
+
+## Credits
+Pixel arts used in this program are from:
+
+- https://pipoya.itch.io/pipoya-rpg-tileset-32x32
+- https://superdark.itch.io/16x16-free-npc-pack
+- https://snoopethduckduck.itch.io/guns
+- https://penusbmic.itch.io/monster-pack-i
+
+Tilemaps are created using `Tiled`: https://www.mapeditor.org/
