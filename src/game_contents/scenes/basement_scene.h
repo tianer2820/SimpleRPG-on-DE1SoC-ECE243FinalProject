@@ -106,20 +106,35 @@ void point_tp_out_interact(InteractPoint* self){
 }
 
 
+InteractPoint point_weapon;
+const char* point_weapon_label = "Pick up";
+void point_weapon_interact(InteractPoint* self){
+    ImageSlice_new(&(actor_weapon.image));
+    weapon_pickedup = true;
+}
+
+
+InteractPoint point_back_ruin;
+const char* point_back_ruin_label = "Leave";
+void point_back_ruin_interact(InteractPoint* self){
+    GameServer_load_scene(game_server, &scene_ruins);
+    GameServer_move_player(game_server, 6, 7);
+}
+
 
 void scene_basement_setup(Scene *self)
 {
     // setup player
     game_server->actor_list[6] = (Actor*)&actor_player;
     game_server->player = (Actor*)&actor_player;
-    GameServer_move_player(game_server, 1, 7);
+    GameServer_move_player(game_server, 2, 10);
 
     int i;
     for (i = 0; i < 6; i++)
     {
         game_server->actor_list[i] = (Actor*)get_hex_display(i);
     }
-
+    
     game_server->actor_list[7] = (Actor*)&actor_weapon;
     actor_weapon.block_x = 9;
     actor_weapon.block_y = 3;
@@ -135,6 +150,8 @@ void scene_basement_setup(Scene *self)
     game_server->interact_points[6] = &point_password;
     game_server->interact_points[7] = &point_tp_in;
     game_server->interact_points[8] = &point_tp_out;
+    game_server->interact_points[9] = &point_weapon;
+    game_server->interact_points[10] = &point_back_ruin;
 }
 
 
@@ -191,6 +208,17 @@ void init_scene_basement()
     point_tp_out.interact = point_tp_out_interact;
     point_tp_out.x = 12;
     point_tp_out.y = 4;
+
+    point_weapon.action_name_str = point_weapon_label;
+    point_weapon.interact = point_weapon_interact;
+    point_weapon.x = 10;
+    point_weapon.y = 4;
+
+    point_back_ruin.action_name_str = point_back_ruin_label;
+    point_back_ruin.interact = point_back_ruin_interact;
+    point_back_ruin.x = 2;
+    point_back_ruin.y = 10;
+
 
     // point_bulleitin_board.action_name_str = point_bulleitin_board_label;
     // point_bulleitin_board.interact = point_bulleitin_board_interact;

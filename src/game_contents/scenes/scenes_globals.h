@@ -10,4 +10,6 @@ Scene scene_village2;
 Scene scene_ruins;
 Scene scene_basement;
 
+bool weapon_pickedup = false;
+
 #endif // SCENES_GLOBALS_H
