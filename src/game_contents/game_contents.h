@@ -3,9 +3,11 @@
 
 #include "resources.h"
 #include "tilesets.h"
+
 #include "player.h"
 #include "farmer.h"
 #include "servant.h"
+#include "hex_display.h"
 
 #include "scenes/scenes_globals.h"
 #include "scenes/initial_scene.h"
@@ -22,6 +24,7 @@ void init_game_contents(){
     init_player();
     init_farmer();
     init_servant();
+    init_hex();
 
     init_scene_initial();
     init_scene_hallway();

@@ -14,7 +14,7 @@
 #include "../resources.h"
 #include "../tilesets.h"
 #include "../player.h"
-#include "../servant.h"
+#include "../hex_display.h"
 
 const int mapdata_basement_layer1[] = {
 467,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,465,467,
@@ -66,9 +66,16 @@ Tilemap tilemap_basement_layer2;
 void scene_basement_setup(Scene *self)
 {
     // setup player
-    game_server->actor_list[0] = (Actor*)&actor_player;
+    game_server->actor_list[6] = (Actor*)&actor_player;
     game_server->player = (Actor*)&actor_player;
     GameServer_move_player(game_server, 1, 7);
+
+    game_server->actor_list[1] = (Actor*)&actor_hex0;
+    game_server->actor_list[2] = (Actor*)&actor_hex1;
+    game_server->actor_list[3] = (Actor*)&actor_hex2;
+    game_server->actor_list[4] = (Actor*)&actor_hex3;
+    game_server->actor_list[5] = (Actor*)&actor_hex4;
+    game_server->actor_list[0] = (Actor*)&actor_hex5;
 
     // setup interact points
     // game_server->interact_points[0] = &point_to_basement;
@@ -95,6 +102,41 @@ void init_scene_basement()
     scene_basement.map_layers[1] = &tilemap_basement_layer2;
     scene_basement.ambient_color = WHITE;
     scene_basement.setup = scene_basement_setup;
+
+    // hex display
+    int i;
+    for (i = 0; i < 6; i++)
+    {
+        ActorHEXDisplay* hex;
+        switch (i)
+        {
+        case 0:
+            hex = &actor_hex0;
+            break;
+        case 1:
+            hex = &actor_hex1;
+            break;
+        case 2:
+            hex = &actor_hex2;
+            break;
+        case 3:
+            hex = &actor_hex3;
+            break;
+        case 4:
+            hex = &actor_hex4;
+            break;
+        case 5:
+            hex = &actor_hex5;
+            break;
+        default:
+            hex = NULL;
+            break;
+        }
+        hex->base.block_x = i + 5;
+        hex->base.display_x = i + 5;
+        hex->base.block_y = 6;
+        hex->base.display_y = 6;
+    }
 
     // interact points
     // point_to_basement.action_name_str = point_to_basement_label;

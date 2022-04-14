@@ -33,6 +33,7 @@ const unsigned char simple_set_solid[] = {
 ShortImage character_set_img;
 Tileset character_set;
 
+ShortImage hex_set_img;
 
 void init_tilesets(){
     // init image
@@ -45,6 +46,11 @@ void init_tilesets(){
     character_set_img.h = RES_CHARACTERS_H;
     character_set_img.data = RES_CHARACTERS_DATA;
     character_set_img.mask = RES_CHARACTERS_MASK;
+
+    hex_set_img.w = RES_HEX_DISPLAY_W;
+    hex_set_img.h = RES_HEX_DISPLAY_H;
+    hex_set_img.data = RES_HEX_DISPLAY_DATA;
+    hex_set_img.mask = RES_HEX_DISPLAY_MASK;
 
 
     // init tileset
@@ -59,6 +65,7 @@ void init_tilesets(){
     character_set.h = RES_CHARACTERS_H / 32;
     character_set.tile_size = 32;
     character_set.solid_mask = NULL;
+
 }
 
 #endif // TILESETS_H
